@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { ScrollVideo } from '@/components/ScrollVideo'
 import { Footer } from '@/components/Footer'
 import { products } from '@/lib/products'
 
@@ -18,10 +19,11 @@ export default function Home() {
 
   return (
     <>
-      {/* ── HERO — fondo blanco ───────────────────────── */}
-      <section className="relative min-h-screen bg-chalk flex flex-col items-center justify-center overflow-hidden">
+      {/* ── HERO — blanco puro ────────────────────────── */}
+      <section className="relative min-h-screen bg-white flex flex-col items-center justify-center overflow-hidden">
+        {/* Grid lines sobre blanco */}
         <div
-          className="absolute inset-0 opacity-[0.03]"
+          className="absolute inset-0 opacity-[0.04]"
           style={{
             backgroundImage:
               'linear-gradient(#0A0A0A 1px, transparent 1px), linear-gradient(90deg, #0A0A0A 1px, transparent 1px)',
@@ -56,7 +58,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── MANIFESTO — fondo negro ───────────────────── */}
+      {/* ── MANIFESTO — negro ─────────────────────────── */}
       <section className="bg-ink text-chalk py-28 md:py-44 px-6 md:px-10 overflow-hidden">
         <div className="max-w-5xl mx-auto">
           <h2 className="reveal font-bebas text-[12vw] md:text-[8vw] leading-none">
@@ -77,137 +79,94 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── MARQUEE — fondo blanco ────────────────────── */}
-      <div className="bg-chalk border-y border-ink/8 py-4 overflow-hidden">
+      {/* ── MARQUEE — negro ───────────────────────────── */}
+      <div className="bg-ink border-y border-chalk/8 py-4 overflow-hidden">
         <div className="marquee-track whitespace-nowrap">
           {[...Array(6)].map((_, i) => (
             <span
               key={i}
-              className="inline-flex items-center gap-8 px-8 font-bebas text-2xl text-ink/15 tracking-widest"
+              className="inline-flex items-center gap-8 px-8 font-bebas text-2xl text-chalk/15 tracking-widest"
             >
               PIEZA ÚNICA
-              <span className="text-ink/8">·</span>
+              <span className="text-chalk/8">·</span>
               ONE OF A KIND
-              <span className="text-ink/8">·</span>
+              <span className="text-chalk/8">·</span>
               DONOSTIA
-              <span className="text-ink/8">·</span>
+              <span className="text-chalk/8">·</span>
               HECHO A MANO
-              <span className="text-ink/8">·</span>
+              <span className="text-chalk/8">·</span>
             </span>
           ))}
         </div>
       </div>
 
-      {/* ── SHOWCASE 3D — fondo negro ─────────────────── */}
-      <section className="bg-ink relative">
-        <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
-          {/* Number watermark */}
-          <span className="absolute font-bebas text-[35vw] text-chalk/[0.02] select-none pointer-events-none">
-            02
-          </span>
+      {/* ── SCROLL-DRIVEN VIDEO — negro ───────────────── */}
+      <ScrollVideo
+        src="/videos/product-02.mp4"
+        poster="/images/product-02.png"
+        className="w-72 md:w-96 lg:w-[460px] aspect-square object-contain"
+        scrollHeight="320vh"
+        number="02"
+        label="02 — LUJO LIMITADO"
+      />
 
-          {/* Video showcase — swap src when Higgsfield video is ready */}
-          <div className="relative z-10 w-72 md:w-96 lg:w-[460px] aspect-square flex items-center justify-center">
-            <ShowcaseProduct02 />
-          </div>
-
-          {/* Side label */}
-          <div className="absolute right-6 md:right-10 top-1/2 -translate-y-1/2 flex flex-col items-end gap-2">
-            <span className="font-bebas text-xs tracking-[0.4em] text-chalk/20 [writing-mode:vertical-rl] rotate-180">
-              02 — LUJO LIMITADO
-            </span>
-          </div>
-        </div>
-        <div className="h-[200vh]" />
-      </section>
-
-      {/* ── COLECCIÓN — fondo blanco ──────────────────── */}
-      <section className="bg-chalk py-24 md:py-36 px-6 md:px-10">
+      {/* ── COLECCIÓN — blanco puro ───────────────────── */}
+      <section className="bg-white py-24 md:py-36 px-6 md:px-10">
         <div className="max-w-6xl mx-auto">
           <p className="reveal text-[9px] tracking-[0.6em] uppercase text-ink/25 font-sans mb-16">
             Colección / Collection
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
             {products.map((p) => (
               <Link key={p.id} href={`/coleccion/${p.id}`} className="group block">
-                <article
-                  className="reveal relative overflow-hidden aspect-square flex items-center justify-center"
-                  style={{ backgroundColor: p.theme.bg }}
-                >
-                  <span
-                    className="absolute font-bebas text-[18vw] md:text-[12vw] select-none pointer-events-none"
-                    style={{ color: p.theme.text, opacity: 0.04 }}
-                  >
-                    {p.number}
-                  </span>
-
-                  <Image
-                    src={p.images.main}
-                    alt={`ACRO ${p.number}`}
-                    width={500}
-                    height={500}
-                    className="relative z-10 w-3/4 h-3/4 object-contain transition-transform duration-700 group-hover:scale-[1.04]"
-                  />
-
-                  <div className="absolute inset-0 flex items-end justify-center pb-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <article className="reveal relative">
+                  {/* Imagen limpia sobre blanco — sin fondo de color */}
+                  <div className="relative aspect-square flex items-center justify-center overflow-hidden bg-white">
                     <span
-                      className="font-bebas text-sm tracking-[0.35em] px-6 py-2 border"
-                      style={{ color: p.theme.text, borderColor: p.theme.text, backgroundColor: p.theme.bg }}
+                      className="absolute font-bebas text-[20vw] md:text-[14vw] select-none pointer-events-none text-ink/[0.03]"
                     >
-                      Descubrir
+                      {p.number}
                     </span>
+                    <Image
+                      src={p.images.main}
+                      alt={`ACRO ${p.number}`}
+                      width={520}
+                      height={520}
+                      className="relative z-10 w-4/5 h-4/5 object-contain transition-transform duration-700 group-hover:scale-[1.03]"
+                    />
+                  </div>
+
+                  {/* Info bajo la imagen */}
+                  <div className="mt-5 flex items-baseline justify-between border-t border-ink/8 pt-5">
+                    <div>
+                      <span className="font-bebas text-5xl text-ink leading-none">{p.number}</span>
+                      <p className="text-[10px] text-ink/30 font-sans tracking-widest uppercase mt-1">
+                        Una unidad disponible
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <span className="font-bebas text-3xl text-ink">{p.price}€</span>
+                    </div>
                   </div>
                 </article>
-
-                <div className="mt-5 flex items-start justify-between">
-                  <div>
-                    <span className="font-bebas text-4xl text-ink">{p.number}</span>
-                    <p className="text-[10px] text-ink/35 font-sans tracking-wider mt-1 uppercase">
-                      Pieza única · {p.price}€
-                    </p>
-                  </div>
-                  <span className="font-sans text-[9px] text-ink/25 tracking-[0.3em] uppercase mt-2">
-                    Una unidad
-                  </span>
-                </div>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── LOOKBOOK — fondo negro ────────────────────── */}
-      <section className="bg-ink py-16">
-        <p className="px-6 md:px-10 text-[9px] tracking-[0.6em] uppercase text-chalk/20 font-sans mb-8">
-          Lookbook
-        </p>
-        <div className="scroll-gallery px-6 md:px-10">
-          {[...products[0].shooting, ...products[1].shooting].map((src, i) => (
-            <div key={i} className="relative h-72 md:h-96 w-56 md:w-72 flex-shrink-0 overflow-hidden">
-              <Image
-                src={src}
-                alt={`Lookbook ${i + 1}`}
-                fill
-                className="object-cover grayscale hover:grayscale-0 transition-all duration-700"
-                sizes="(max-width: 768px) 224px, 288px"
-              />
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── CTA — fondo negro ─────────────────────────── */}
+      {/* ── CTA — negro ───────────────────────────────── */}
       <section className="bg-ink text-chalk py-28 md:py-40 px-6 flex flex-col items-center text-center">
-        <div className="reveal unique-stamp border-chalk/30 text-chalk/40 mb-12">
-          Una pieza · Una vez · One piece · Once
+        <div className="reveal unique-stamp border-chalk/20 text-chalk/30 mb-12">
+          Una pieza · Una vez · Once
         </div>
         <h2 className="reveal font-bebas text-[12vw] md:text-[7vw] leading-none mb-10">
           ELIGE LA TUYA
         </h2>
         <Link
           href="/coleccion"
-          className="reveal inline-block font-bebas text-xl tracking-[0.3em] px-12 py-4 border border-chalk/30 text-chalk/70 hover:border-chalk hover:text-chalk transition-all duration-400"
+          className="reveal inline-block font-bebas text-xl tracking-[0.3em] px-12 py-4 border border-chalk/20 text-chalk/60 hover:border-chalk hover:text-chalk transition-all duration-500"
         >
           Ver Colección
         </Link>
@@ -215,25 +174,5 @@ export default function Home() {
 
       <Footer />
     </>
-  )
-}
-
-// Showcase component — uses video if available, otherwise premium static
-function ShowcaseProduct02() {
-  return (
-    <div
-      className="w-full h-full relative flex items-center justify-center"
-      style={{ filter: 'drop-shadow(0 0 80px rgba(192,192,192,0.15))' }}
-    >
-      <video
-        src="/videos/product-02.mp4"
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="w-full h-full object-contain"
-        poster="/images/product-02.png"
-      />
-    </div>
   )
 }
