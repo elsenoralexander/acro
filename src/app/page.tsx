@@ -223,15 +223,16 @@ function ShowcaseProduct02() {
   return (
     <div
       className="w-full h-full relative flex items-center justify-center"
-      style={{ filter: 'drop-shadow(0 0 60px rgba(192,192,192,0.12))' }}
+      style={{ filter: 'drop-shadow(0 0 80px rgba(192,192,192,0.15))' }}
     >
-      <Image
-        src="/images/product-02.png"
-        alt="ACRO 02"
-        width={460}
-        height={460}
-        className="w-full h-full object-contain animate-float"
-        priority
+      <video
+        src="/videos/product-02.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="w-full h-full object-contain"
+        poster="/images/product-02.png"
       />
     </div>
   )

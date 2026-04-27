@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
-import { Product3D } from '@/components/Product3D'
 import { Footer } from '@/components/Footer'
 import { getProduct } from '@/lib/products'
 import { useCart } from '@/lib/cart'
@@ -35,6 +34,7 @@ export default function ProductPage() {
 
   const { copy, theme, images, shooting, price, number } = product
   const is02 = number === '02'
+  const videoSrc = `/videos/product-${number}.mp4`
 
   const handleAdd = () => {
     addItem(product)
@@ -57,13 +57,22 @@ export default function ProductPage() {
           {number}
         </span>
 
-        {/* Left — 3D product */}
+        {/* Left — vídeo rotación */}
         <div className="relative z-10 w-full md:w-1/2 flex items-center justify-center pt-28 md:pt-0 px-10 md:px-16 min-h-[60vh] md:min-h-screen">
-          <Product3D
-            src={images.main}
-            alt={`ACRO ${number}`}
-            className="w-full max-w-sm md:max-w-md"
-          />
+          <div
+            className="w-full max-w-sm md:max-w-md aspect-square"
+            style={{ filter: is02 ? 'drop-shadow(0 0 60px rgba(192,192,192,0.12))' : 'drop-shadow(0 20px 60px rgba(0,0,0,0.15))' }}
+          >
+            <video
+              src={videoSrc}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-contain"
+              poster={images.main}
+            />
+          </div>
         </div>
 
         {/* Right — info */}
