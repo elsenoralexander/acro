@@ -15,7 +15,7 @@ export function ScrollVideo({
   src,
   poster,
   className = '',
-  scrollHeight = '300vh',
+  scrollHeight = '180vh',
   label,
   number,
 }: Props) {
