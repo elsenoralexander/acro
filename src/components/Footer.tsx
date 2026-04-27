@@ -14,9 +14,9 @@ export function Footer() {
             className="h-10 w-auto object-contain"
           />
           <p className="text-xs text-white/40 leading-relaxed font-sans max-w-xs">
-            Complementos de crochet artesanal.
+            Hecho a mano, uno a uno, en Donostia.
             <br />
-            Hechos a mano, uno a uno, en Donostia.
+            Una pieza. Una vez.
           </p>
         </div>
 

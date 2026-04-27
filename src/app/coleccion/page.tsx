@@ -5,7 +5,7 @@ import { products } from '@/lib/products'
 
 export const metadata = {
   title: 'Colección — ACRO',
-  description: 'Todos los complementos ACRO. Piezas únicas de crochet artesanal hechas a mano en Donostia.',
+  description: 'Colección ACRO. Piezas únicas hechas a mano en Donostia. Una pieza, una vez.',
 }
 
 export default function ColeccionPage() {
@@ -23,10 +23,10 @@ export default function ColeccionPage() {
               <br />
               <span className="text-ink/20">ÚNICAS</span>
             </h1>
-            <p className="font-sans text-sm text-ink/50 mt-6 max-w-md leading-relaxed">
-              Cada complemento ACRO es irrepetible. Cuando se vende, desaparece.
+            <p className="font-sans text-sm text-ink/40 mt-6 max-w-md leading-relaxed">
+              Cuando se vende, desaparece. No hay reposición.
               <br />
-              <em>Each ACRO piece is unrepeatable. When it sells, it disappears.</em>
+              <em className="opacity-60">When it sells, it disappears. No restock.</em>
             </p>
           </div>
 

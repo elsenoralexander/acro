@@ -8,7 +8,8 @@ import { usePathname } from 'next/navigation'
 export function Header() {
   const { count } = useCart()
   const pathname = usePathname()
-  const isDark = pathname === '/' || pathname.startsWith('/coleccion/02')
+  // Home es CLARO (blanco); /coleccion/02 es OSCURO
+  const isDark = pathname.startsWith('/coleccion/02')
 
   return (
     <header

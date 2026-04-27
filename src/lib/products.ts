@@ -47,32 +47,32 @@ export const products: Product[] = [
     ],
     copy: {
       es: {
-        tagline: 'Tejido a mano. Piedras del Cantábrico.',
+        tagline: 'Piedras únicas. Hilo natural. Una sola vez.',
         description:
-          'Hilo natural trenzado a mano, punto a punto, adornado con piedras únicas recogidas en la costa vasca. No hay otra igual. Nunca habrá otra igual.',
+          'Tejida a mano, punto a punto, con piedras recogidas en la costa vasca. No hay catálogo. No hay serie. Esta pieza existe una vez.',
         details: [
-          'Crochet artesanal en hilo de algodón',
-          'Piedras naturales únicas',
+          'Hilo de algodón natural',
+          'Piedras únicas de la costa vasca',
           'Asa de cuerda trenzada',
           'Interior en tela forrada',
           'Hecho en Donostia',
         ],
         world:
-          'El 01 nace del mar. De la luz que rebota en el Cantábrico en agosto, de los guijarros pulidos por siglos de ola. Cada piedra que adorna este bolso es irrepetible — como la pieza que sostiene.',
+          'El 01 nace del mar. De la luz que rebota en el Cantábrico en agosto, de los guijarros pulidos por siglos de ola. Cada piedra es irrepetible — como la pieza que la sostiene.',
       },
       en: {
-        tagline: 'Hand-woven. Cantabrian stones.',
+        tagline: 'Unique stones. Natural yarn. Just once.',
         description:
-          'Natural yarn braided by hand, stitch by stitch, adorned with unique stones gathered on the Basque coast. There is no other like it. There never will be.',
+          'Woven by hand, stitch by stitch, with stones gathered on the Basque coast. No catalogue. No series. This piece exists once.',
         details: [
-          'Artisanal crochet in cotton yarn',
-          'Unique natural stones',
+          'Natural cotton yarn',
+          'Unique stones from the Basque coast',
           'Braided rope handle',
           'Lined fabric interior',
           'Made in Donostia',
         ],
         world:
-          'The 01 is born from the sea. From the light bouncing off the Cantabrian in August, from pebbles smoothed by centuries of waves. Each stone adorning this bag is unrepeatable — like the piece that holds them.',
+          'The 01 is born from the sea. From the light bouncing off the Cantabrian in August, from pebbles smoothed by centuries of waves. Each stone is unrepeatable — like the piece that holds it.',
       },
     },
     theme: {
@@ -99,12 +99,12 @@ export const products: Product[] = [
     ],
     copy: {
       es: {
-        tagline: 'Acero y crochet. El contraste que nadie esperaba.',
+        tagline: 'Metal frío. Interior naranja. Una declaración.',
         description:
-          'Interior naranja. Exterior plateado. Hardware metálico. Cadena de acero. Esta pieza no pide permiso. La llevas con un Off-White, con un LV, con un Corteiz — o con lo que te dé la gana.',
+          'Exterior plateado. Hardware metálico. Interior naranja quemado. Esta pieza no necesita contexto. La llevas con Off-White, con LV, con Corteiz — o con lo que te dé la gana.',
         details: [
-          'Crochet plateado artesanal',
-          'Cadena metálica tipo baguette',
+          'Hilo plateado tejido a mano',
+          'Cadena metálica',
           'Interior en cuero sintético naranja',
           'Abalorios metálicos cosidos a mano',
           'Placa y llavero ACRO',
@@ -112,15 +112,15 @@ export const products: Product[] = [
           'Hecho en Donostia',
         ],
         world:
-          'El 02 es la contradicción hecha objeto. La técnica más artesanal del mundo — el crochet de abuela — reinterpretada con el lenguaje del lujo contemporáneo. Metal frío, hilo plateado, naranja quemado. Una declaración de intenciones.',
+          'El 02 es la contradicción hecha objeto. Metal frío, hilo plateado, naranja quemado. Lo que las máquinas no pueden hacer — y el mercado no puede duplicar.',
       },
       en: {
-        tagline: 'Steel and crochet. The contrast nobody expected.',
+        tagline: 'Cold metal. Orange interior. A statement.',
         description:
-          'Orange interior. Silver exterior. Metal hardware. Steel chain. This piece asks no permission. Wear it with Off-White, LV, Corteiz — or whatever the hell you want.',
+          'Silver exterior. Metal hardware. Burnt orange interior. This piece needs no context. Wear it with Off-White, LV, Corteiz — or whatever you want.',
         details: [
-          'Artisanal silver crochet',
-          'Metal baguette chain',
+          'Silver yarn woven by hand',
+          'Metal chain',
           'Orange synthetic leather interior',
           'Hand-sewn metallic beads',
           'ACRO plate and keyring',
@@ -128,7 +128,7 @@ export const products: Product[] = [
           'Made in Donostia',
         ],
         world:
-          'The 02 is contradiction made object. The world\'s most artisanal technique — grandma\'s crochet — reinterpreted through the language of contemporary luxury. Cold metal, silver yarn, burnt orange. A statement of intent.',
+          'The 02 is contradiction made object. Cold metal, silver yarn, burnt orange. What machines cannot make — and the market cannot duplicate.',
       },
     },
     theme: {
