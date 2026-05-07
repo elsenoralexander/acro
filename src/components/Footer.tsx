@@ -26,6 +26,7 @@ export function Footer() {
             { href: '/', label: 'Inicio' },
             { href: '/coleccion', label: 'Colección' },
             { href: '/carrito', label: 'Carrito' },
+            { href: '/admin', label: 'Admin' },
           ].map((l) => (
             <Link
               key={l.href}
