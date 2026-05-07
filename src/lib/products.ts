@@ -137,6 +137,60 @@ export const products: Product[] = [
       accent: '#C0C0C0',
     },
   },
+  {
+    id: '03',
+    number: '03',
+    price: 165,
+    images: {
+      main: '/images/product-03.png',
+      views: ['/images/product-03.png'],
+    },
+    shooting: [
+      '/images/shoot-03-1.png',
+      '/images/shoot-03-2.png',
+      '/images/shoot-03-3.png',
+      '/images/shoot-03-4.png',
+      '/images/shoot-03-5.png',
+      '/images/shoot-03-6.png',
+    ],
+    copy: {
+      es: {
+        tagline: 'Acero gris. Noche. Sin excusas.',
+        description:
+          'Tejida a mano en hilo metálico plateado. Formato shoulder — compacta, densa, presente. Esta bolsa no pide permiso. Va donde tú vas: la barra, la pista, la madrugada.',
+        details: [
+          'Hilo metálico plateado tejido a mano',
+          'Asa shoulder con nudo trenzado',
+          'Interior forrado',
+          'Cierre de cremallera oculta',
+          'Placa ACRO',
+          'Hecho en Donostia',
+        ],
+        world:
+          'El 03 nació de noche. De la luz que rebota en una copa, del ruido de fondo de un rooftop, de ese momento en que la música sube y tú ya sabes que va a ser una buena noche. Acero y hilo. Nada más.',
+      },
+      en: {
+        tagline: 'Steel grey. Night. No excuses.',
+        description:
+          'Hand-woven in metallic silver yarn. Shoulder format — compact, dense, present. This bag asks for nothing. It goes where you go: the bar, the floor, the early hours.',
+        details: [
+          'Metallic silver yarn woven by hand',
+          'Shoulder strap with braided knot',
+          'Lined interior',
+          'Hidden zip closure',
+          'ACRO plate',
+          'Made in Donostia',
+        ],
+        world:
+          'The 03 was born at night. From light bouncing off a glass, the background noise of a rooftop, that moment when the music rises and you already know it\'s going to be a good night. Steel and yarn. Nothing more.',
+      },
+    },
+    theme: {
+      bg: '#0A0F1E',
+      text: '#E4E8EF',
+      accent: '#8B9EB7',
+    },
+  },
 ]
 
 export function getProduct(id: string): Product | undefined {

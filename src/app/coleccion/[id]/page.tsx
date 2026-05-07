@@ -44,6 +44,8 @@ export default function ProductPage() {
 
   const { copy, theme, images, shooting, price, number } = product
   const is02 = number === '02'
+  const isDark = theme.bg !== '#F5EFE0' && theme.bg !== '#FFFFFF'
+  const hasVideo = number === '01' || number === '02'
   const videoSrc = `/videos/product-${number}.mp4`
 
   const handleAdd = () => {
@@ -52,9 +54,9 @@ export default function ProductPage() {
     setTimeout(() => setAdded(false), 2000)
   }
 
-  const txtColor = is02 ? '#F5F5F0' : '#0A0A0A'
+  const txtColor = theme.text
   const bgColor = theme.bg
-  const mutedColor = is02 ? 'rgba(245,245,240,0.3)' : 'rgba(10,10,10,0.3)'
+  const mutedColor = isDark ? `rgba(228,232,239,0.3)` : 'rgba(10,10,10,0.3)'
 
   return (
     <>
@@ -70,21 +72,32 @@ export default function ProductPage() {
           {number}
         </span>
 
-        {/* Video rotación */}
+        {/* Imagen / Video producto */}
         <div className="relative z-10 w-full md:w-1/2 flex items-center justify-center pt-28 md:pt-0 px-10 md:px-16 min-h-[60vh] md:min-h-screen">
           <div
             className="w-full max-w-sm md:max-w-md aspect-square"
-            style={{ filter: is02 ? 'drop-shadow(0 0 60px rgba(192,192,192,0.12))' : 'drop-shadow(0 20px 60px rgba(0,0,0,0.12))' }}
+            style={{ filter: isDark ? 'drop-shadow(0 0 60px rgba(139,158,183,0.15))' : 'drop-shadow(0 20px 60px rgba(0,0,0,0.12))' }}
           >
-            <video
-              src={videoSrc}
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-contain"
-              poster={images.main}
-            />
+            {hasVideo ? (
+              <video
+                src={videoSrc}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-contain"
+                poster={images.main}
+              />
+            ) : (
+              <Image
+                src={images.main}
+                alt={`ACRO ${number}`}
+                width={600}
+                height={600}
+                className="w-full h-full object-contain"
+                priority
+              />
+            )}
           </div>
         </div>
 
@@ -170,7 +183,7 @@ export default function ProductPage() {
       {/* ── THE WORLD ─────────────────────────── */}
       <section
         className="py-24 md:py-36 px-6 md:px-10"
-        style={{ backgroundColor: is02 ? '#0A0A0A' : '#F5F5F0' }}
+        style={{ backgroundColor: isDark ? bgColor : '#F5F5F0' }}
       >
         <div className="max-w-4xl mx-auto">
           <p className="reveal text-[9px] tracking-[0.6em] uppercase font-sans mb-10" style={{ color: mutedColor }}>
@@ -184,7 +197,7 @@ export default function ProductPage() {
           </blockquote>
           <p
             className="reveal font-sans text-sm leading-relaxed mt-10 max-w-lg italic"
-            style={{ color: is02 ? 'rgba(245,245,240,0.35)' : 'rgba(10,10,10,0.35)' }}
+            style={{ color: isDark ? 'rgba(228,232,239,0.35)' : 'rgba(10,10,10,0.35)' }}
           >
             {copy.en.world}
           </p>
@@ -211,7 +224,7 @@ export default function ProductPage() {
       {/* ── DETAILS ───────────────────────────── */}
       <section
         className="py-20 px-6 md:px-10"
-        style={{ backgroundColor: is02 ? '#111' : '#EDEDE8' }}
+        style={{ backgroundColor: isDark ? '#0D121F' : '#EDEDE8' }}
       >
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
           <div>
@@ -223,7 +236,7 @@ export default function ProductPage() {
             </p>
             <p
               className="reveal font-sans text-sm leading-relaxed mt-4 italic"
-              style={{ color: is02 ? 'rgba(245,245,240,0.3)' : 'rgba(10,10,10,0.3)' }}
+              style={{ color: isDark ? 'rgba(228,232,239,0.3)' : 'rgba(10,10,10,0.3)' }}
             >
               {copy.en.description}
             </p>
