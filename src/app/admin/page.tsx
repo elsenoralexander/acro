@@ -37,7 +37,8 @@ export default function AdminPage() {
     } else if (res.status === 401) {
       router.push('/admin/login')
     } else {
-      setMessage({ id: productId, text: 'Error al guardar' })
+      const data = await res.json().catch(() => ({}))
+      setMessage({ id: productId, text: data.error || 'Error al guardar' })
     }
 
     setSaving(null)
