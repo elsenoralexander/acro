@@ -32,7 +32,10 @@ export async function getAllStock(): Promise<StockData> {
       const { blobs } = await list({ prefix: BLOB_PATHNAME, token })
       const blob = blobs.find((b) => b.pathname === BLOB_PATHNAME)
       if (blob) {
-        const res = await fetch(blob.url, { cache: 'no-store' })
+        const res = await fetch(blob.url, {
+          cache: 'no-store',
+          headers: { Authorization: `Bearer ${token}` },
+        })
         if (res.ok) return res.json()
       }
     } catch (err) {
@@ -50,7 +53,7 @@ export async function setAllStock(stock: StockData): Promise<void> {
     const existing = blobs.find((b) => b.pathname === BLOB_PATHNAME)
     if (existing) await del(existing.url, { token })
     await put(BLOB_PATHNAME, JSON.stringify(stock), {
-      access: 'public',
+      access: 'private',
       addRandomSuffix: false,
       token,
     })
