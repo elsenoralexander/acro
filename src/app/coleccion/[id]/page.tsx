@@ -13,13 +13,23 @@ export default function ProductPage() {
   const product = getProduct(params.id as string)
   const { addItem, items } = useCart()
   const [added, setAdded] = useState(false)
+  const [stock, setStock] = useState<number | null>(null)
   const revealRef = useRef<HTMLDivElement>(null)
 
   const inCart = items.some((i) => i.product.id === product?.id)
+  const outOfStock = stock === 0
 
   useEffect(() => {
     if (!product) router.push('/coleccion')
   }, [product, router])
+
+  useEffect(() => {
+    if (!product) return
+    fetch('/api/stock')
+      .then((r) => r.json())
+      .then((data) => setStock(data[product.id] ?? 0))
+      .catch(() => setStock(null))
+  }, [product])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -105,18 +115,27 @@ export default function ProductPage() {
             </span>
           </div>
 
-          <button
-            onClick={handleAdd}
-            disabled={inCart}
-            className="mt-6 w-full max-w-xs font-bebas text-xl tracking-[0.2em] py-4 px-8 border-2 transition-all duration-300 hover:opacity-80 disabled:opacity-40"
-            style={{
-              borderColor: txtColor,
-              color: inCart ? bgColor : txtColor,
-              backgroundColor: inCart ? txtColor : 'transparent',
-            }}
-          >
-            {inCart ? '✓ En el carrito' : added ? '✓ Añadido' : 'Añadir al carrito'}
-          </button>
+          {outOfStock ? (
+            <div
+              className="mt-6 w-full max-w-xs font-bebas text-xl tracking-[0.2em] py-4 px-8 border-2 text-center select-none"
+              style={{ borderColor: txtColor, color: txtColor, opacity: 0.3 }}
+            >
+              Fuera de stock
+            </div>
+          ) : (
+            <button
+              onClick={handleAdd}
+              disabled={inCart || stock === null}
+              className="mt-6 w-full max-w-xs font-bebas text-xl tracking-[0.2em] py-4 px-8 border-2 transition-all duration-300 hover:opacity-80 disabled:opacity-40"
+              style={{
+                borderColor: txtColor,
+                color: inCart ? bgColor : txtColor,
+                backgroundColor: inCart ? txtColor : 'transparent',
+              }}
+            >
+              {inCart ? '✓ En el carrito' : added ? '✓ Añadido' : 'Añadir al carrito'}
+            </button>
+          )}
 
           {inCart && (
             <button
@@ -278,20 +297,29 @@ export default function ProductPage() {
           {price}€
         </p>
         <p className="font-sans text-xs mb-12" style={{ color: txtColor, opacity: 0.35 }}>
-          Una sola unidad disponible · Only one available
+          {outOfStock ? 'Pieza agotada · Sold out' : 'Una sola unidad disponible · Only one available'}
         </p>
-        <button
-          onClick={handleAdd}
-          disabled={inCart}
-          className="font-bebas text-2xl tracking-[0.2em] py-5 px-14 border-2 transition-all duration-300 hover:opacity-70 disabled:opacity-30"
-          style={{
-            borderColor: txtColor,
-            color: inCart ? bgColor : txtColor,
-            backgroundColor: inCart ? txtColor : 'transparent',
-          }}
-        >
-          {inCart ? '✓ En el carrito' : 'Añadir al carrito'}
-        </button>
+        {outOfStock ? (
+          <div
+            className="font-bebas text-2xl tracking-[0.2em] py-5 px-14 border-2 select-none"
+            style={{ borderColor: txtColor, color: txtColor, opacity: 0.25 }}
+          >
+            Fuera de stock
+          </div>
+        ) : (
+          <button
+            onClick={handleAdd}
+            disabled={inCart || stock === null}
+            className="font-bebas text-2xl tracking-[0.2em] py-5 px-14 border-2 transition-all duration-300 hover:opacity-70 disabled:opacity-30"
+            style={{
+              borderColor: txtColor,
+              color: inCart ? bgColor : txtColor,
+              backgroundColor: inCart ? txtColor : 'transparent',
+            }}
+          >
+            {inCart ? '✓ En el carrito' : 'Añadir al carrito'}
+          </button>
+        )}
       </section>
 
       <Footer />
