@@ -1,5 +1,3 @@
-import crypto from 'crypto'
-
 const COOKIE_NAME = 'acro-admin'
 const TOKEN_TTL = 30 * 24 * 60 * 60 * 1000 // 30 days
 
@@ -7,16 +5,32 @@ function secret(): string {
   return process.env.ADMIN_PASSWORD ?? 'acro-dev-secret'
 }
 
-export function createAdminToken(): string {
-  const expiry = Date.now() + TOKEN_TTL
-  const payload = `admin:${expiry}`
-  const sig = crypto.createHmac('sha256', secret()).update(payload).digest('hex')
-  return Buffer.from(`${payload}:${sig}`).toString('base64url')
+async function hmac(payload: string): Promise<string> {
+  const enc = new TextEncoder()
+  const key = await globalThis.crypto.subtle.importKey(
+    'raw',
+    enc.encode(secret()),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  )
+  const sig = await globalThis.crypto.subtle.sign('HMAC', key, enc.encode(payload))
+  return Array.from(new Uint8Array(sig))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('')
 }
 
-export function verifyAdminToken(token: string): boolean {
+export async function createAdminToken(): Promise<string> {
+  const expiry = Date.now() + TOKEN_TTL
+  const payload = `admin:${expiry}`
+  const sig = await hmac(payload)
+  return btoa(`${payload}:${sig}`).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
+}
+
+export async function verifyAdminToken(token: string): Promise<boolean> {
   try {
-    const decoded = Buffer.from(token, 'base64url').toString('utf-8')
+    const padded = token.replace(/-/g, '+').replace(/_/g, '/')
+    const decoded = atob(padded.padEnd(padded.length + ((4 - (padded.length % 4)) % 4), '='))
     const lastColon = decoded.lastIndexOf(':')
     const payload = decoded.slice(0, lastColon)
     const sig = decoded.slice(lastColon + 1)
@@ -24,8 +38,8 @@ export function verifyAdminToken(token: string): boolean {
     if (parts[0] !== 'admin') return false
     const expiry = parseInt(parts[1], 10)
     if (isNaN(expiry) || Date.now() > expiry) return false
-    const expectedSig = crypto.createHmac('sha256', secret()).update(payload).digest('hex')
-    return crypto.timingSafeEqual(Buffer.from(sig, 'hex'), Buffer.from(expectedSig, 'hex'))
+    const expectedSig = await hmac(payload)
+    return sig === expectedSig
   } catch {
     return false
   }

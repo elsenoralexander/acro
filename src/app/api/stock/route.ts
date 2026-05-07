@@ -11,7 +11,7 @@ export async function GET() {
 
 export async function PUT(req: NextRequest) {
   const token = req.cookies.get(COOKIE_NAME)?.value
-  if (!token || !verifyAdminToken(token)) {
+  if (!token || !(await verifyAdminToken(token))) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
   }
 
