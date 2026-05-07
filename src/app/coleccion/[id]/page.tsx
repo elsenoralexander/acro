@@ -74,10 +74,7 @@ export default function ProductPage() {
 
         {/* Imagen / Video producto */}
         <div className="relative z-10 w-full md:w-1/2 flex items-center justify-center pt-28 md:pt-0 px-10 md:px-16 min-h-[60vh] md:min-h-screen">
-          <div
-            className="w-full max-w-sm md:max-w-md aspect-square"
-            style={{ filter: isDark ? 'drop-shadow(0 0 60px rgba(139,158,183,0.15))' : 'drop-shadow(0 20px 60px rgba(0,0,0,0.12))' }}
-          >
+          <div className="w-full max-w-sm md:max-w-md aspect-square">
             {hasVideo ? (
               <video
                 src={videoSrc}
@@ -85,7 +82,7 @@ export default function ProductPage() {
                 loop
                 muted
                 playsInline
-                className="w-full h-full object-contain"
+                className={`w-full h-full object-contain ${!isDark ? 'mix-blend-multiply' : ''}`}
                 poster={images.main}
               />
             ) : (
@@ -94,7 +91,7 @@ export default function ProductPage() {
                 alt={`ACRO ${number}`}
                 width={600}
                 height={600}
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain mix-blend-multiply"
                 priority
               />
             )}
