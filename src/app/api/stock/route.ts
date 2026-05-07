@@ -24,7 +24,14 @@ export async function PUT(req: NextRequest) {
 
   const stock = await getAllStock()
   stock[productId] = Math.floor(quantity)
-  await setAllStock(stock)
+
+  try {
+    await setAllStock(stock)
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error('[api/stock] PUT error:', msg)
+    return NextResponse.json({ error: msg }, { status: 500 })
+  }
 
   return NextResponse.json({ ok: true, stock })
 }
