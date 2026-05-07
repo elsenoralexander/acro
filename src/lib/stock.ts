@@ -15,7 +15,6 @@ function readLocalStock(): StockData {
 }
 
 export async function getAllStock(): Promise<StockData> {
-  // Production with Vercel Blob
   if (process.env.BLOB_READ_WRITE_TOKEN) {
     try {
       const { list } = await import('@vercel/blob')
@@ -25,8 +24,8 @@ export async function getAllStock(): Promise<StockData> {
         const res = await fetch(blob.url, { cache: 'no-store' })
         if (res.ok) return res.json()
       }
-    } catch {
-      // fall through to local file
+    } catch (err) {
+      console.error('[stock] getAllStock error:', err)
     }
   }
 
@@ -34,17 +33,16 @@ export async function getAllStock(): Promise<StockData> {
 }
 
 export async function setAllStock(stock: StockData): Promise<void> {
-  // Production with Vercel Blob
   if (process.env.BLOB_READ_WRITE_TOKEN) {
     const { put } = await import('@vercel/blob')
     await put(BLOB_PATHNAME, JSON.stringify(stock), {
       access: 'public',
       addRandomSuffix: false,
+      allowOverwrite: true,
     })
     return
   }
 
-  // Development: write to local file
   fs.writeFileSync(STOCK_FILE, JSON.stringify(stock, null, 2))
 }
 
