@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Footer } from '@/components/Footer'
 import { products } from '@/lib/products'
-import { getAllStock } from '@/lib/stock'
+import { getCatalog, finalPrice } from '@/lib/catalog'
 
 export const dynamic = 'force-dynamic'
 
@@ -12,7 +12,8 @@ export const metadata = {
 }
 
 export default async function ColeccionPage() {
-  const stock = await getAllStock()
+  const catalog = await getCatalog()
+  const stock = catalog.stock
 
   return (
     <>
@@ -40,6 +41,9 @@ export default async function ColeccionPage() {
             {products.map((p) => {
               const qty = stock[p.id] ?? 0
               const outOfStock = qty === 0
+              const basePrice = catalog.prices[p.id] ?? p.price
+              const discount = catalog.discounts[p.id] ?? 0
+              const displayPrice = finalPrice(basePrice, discount)
               return (
                 <Link key={p.id} href={`/coleccion/${p.id}`} className="group block">
                   <article>
@@ -78,8 +82,11 @@ export default async function ColeccionPage() {
                         </p>
                       </div>
                       <div className="text-right">
-                        <span className={`font-bebas text-3xl ${outOfStock ? 'text-ink/30' : 'text-ink'}`}>{p.price}€</span>
-                        <p className="text-[9px] text-ink/25 font-sans tracking-wider mt-1">IVA inc.</p>
+                        <span className={`font-bebas text-3xl ${outOfStock ? 'text-ink/30' : 'text-ink'}`}>{displayPrice}€</span>
+                        {discount > 0 && (
+                          <p className="text-[9px] text-ink/30 font-sans line-through">{basePrice}€</p>
+                        )}
+                        <p className="text-[9px] text-ink/25 font-sans tracking-wider mt-0.5">IVA inc.</p>
                       </div>
                     </div>
 

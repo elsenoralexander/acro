@@ -1,37 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { getAllStock, setAllStock } from '@/lib/stock'
-import { verifyAdminToken, COOKIE_NAME } from '@/lib/auth'
+import { NextResponse } from 'next/server'
+import { getCatalog } from '@/lib/catalog'
 
 export const dynamic = 'force-dynamic'
 
+// Kept for backwards compat — product pages read stock from here
 export async function GET() {
-  const stock = await getAllStock()
-  return NextResponse.json(stock)
-}
-
-export async function PUT(req: NextRequest) {
-  const token = req.cookies.get(COOKIE_NAME)?.value
-  if (!token || !(await verifyAdminToken(token))) {
-    return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
-  }
-
-  const body = await req.json()
-  const { productId, quantity } = body as { productId: string; quantity: number }
-
-  if (!productId || typeof quantity !== 'number' || quantity < 0) {
-    return NextResponse.json({ error: 'Datos inválidos' }, { status: 400 })
-  }
-
-  const stock = await getAllStock()
-  stock[productId] = Math.floor(quantity)
-
-  try {
-    await setAllStock(stock)
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err)
-    console.error('[api/stock] PUT error:', msg)
-    return NextResponse.json({ error: msg }, { status: 500 })
-  }
-
-  return NextResponse.json({ ok: true, stock })
+  const catalog = await getCatalog()
+  return NextResponse.json(catalog.stock)
 }

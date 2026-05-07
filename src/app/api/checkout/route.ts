@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import type { CartItem } from '@/lib/cart'
+import { getCatalog, finalPrice } from '@/lib/catalog'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-06-20',
@@ -14,24 +15,32 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Carrito vacío' }, { status: 400 })
     }
 
+    // Always use server-side prices — never trust client
+    const catalog = await getCatalog()
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
 
-    const lineItems = items.map((item) => ({
-      price_data: {
-        currency: 'eur',
-        product_data: {
-          name: `ACRO ${item.product.number} — Pieza Única`,
-          description: item.product.copy.es.tagline,
-          images: [`${baseUrl}${item.product.images.main}`],
-          metadata: {
-            productId: item.product.id,
-            serial: `#P${item.product.number}-001`,
+    const lineItems = items.map((item) => {
+      const basePrice = catalog.prices[item.product.id] ?? item.product.price
+      const discount = catalog.discounts[item.product.id] ?? 0
+      const unitPrice = finalPrice(basePrice, discount)
+
+      return {
+        price_data: {
+          currency: 'eur',
+          product_data: {
+            name: `ACRO ${item.product.number} — Pieza Única`,
+            description: item.product.copy.es.tagline,
+            images: [`${baseUrl}${item.product.images.main}`],
+            metadata: {
+              productId: item.product.id,
+              serial: `#P${item.product.number}-001`,
+            },
           },
+          unit_amount: Math.round(unitPrice * 100),
         },
-        unit_amount: item.product.price * 100, // cents
-      },
-      quantity: item.quantity,
-    }))
+        quantity: item.quantity,
+      }
+    })
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
