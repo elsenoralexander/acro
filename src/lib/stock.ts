@@ -34,13 +34,23 @@ export async function getAllStock(): Promise<StockData> {
 
 export async function setAllStock(stock: StockData): Promise<void> {
   if (process.env.BLOB_READ_WRITE_TOKEN) {
-    const { put } = await import('@vercel/blob')
-    await put(BLOB_PATHNAME, JSON.stringify(stock), {
-      access: 'public',
-      addRandomSuffix: false,
-      allowOverwrite: true,
-    })
-    return
+    try {
+      const { put, del, list } = await import('@vercel/blob')
+
+      // Borrar blob existente antes de crear uno nuevo
+      const { blobs } = await list({ prefix: BLOB_PATHNAME })
+      const existing = blobs.find((b) => b.pathname === BLOB_PATHNAME)
+      if (existing) await del(existing.url)
+
+      await put(BLOB_PATHNAME, JSON.stringify(stock), {
+        access: 'public',
+        addRandomSuffix: false,
+      })
+      return
+    } catch (err) {
+      console.error('[stock] setAllStock error:', err)
+      throw err
+    }
   }
 
   fs.writeFileSync(STOCK_FILE, JSON.stringify(stock, null, 2))
