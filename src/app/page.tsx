@@ -133,7 +133,7 @@ export default function Home() {
                       alt={`ACRO ${p.number}`}
                       width={520}
                       height={520}
-                      className="relative z-10 w-4/5 h-4/5 object-contain transition-transform duration-700 group-hover:scale-[1.03] mix-blend-multiply"
+                      className="relative z-10 w-4/5 h-4/5 object-contain transition-transform duration-700 group-hover:scale-[1.03] product-img-fade-sm"
                     />
                   </div>
 

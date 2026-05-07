@@ -154,3 +154,15 @@ body {
 .blend-diff {
   mix-blend-mode: difference;
 }
+
+/* Product image — fades edges into any background */
+.product-img-fade {
+  -webkit-mask-image: radial-gradient(ellipse 88% 88% at 50% 52%, black 38%, transparent 78%);
+  mask-image: radial-gradient(ellipse 88% 88% at 50% 52%, black 38%, transparent 78%);
+}
+
+/* Tighter mask for collection grid thumbnails */
+.product-img-fade-sm {
+  -webkit-mask-image: radial-gradient(ellipse 82% 82% at 50% 52%, black 32%, transparent 72%);
+  mask-image: radial-gradient(ellipse 82% 82% at 50% 52%, black 32%, transparent 72%);
+}

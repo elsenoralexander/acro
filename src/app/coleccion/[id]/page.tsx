@@ -82,7 +82,7 @@ export default function ProductPage() {
                 loop
                 muted
                 playsInline
-                className={`w-full h-full object-contain ${!isDark ? 'mix-blend-multiply' : ''}`}
+                className="w-full h-full object-contain product-img-fade"
                 poster={images.main}
               />
             ) : (
@@ -91,7 +91,7 @@ export default function ProductPage() {
                 alt={`ACRO ${number}`}
                 width={600}
                 height={600}
-                className="w-full h-full object-contain mix-blend-multiply"
+                className="w-full h-full object-contain product-img-fade"
                 priority
               />
             )}

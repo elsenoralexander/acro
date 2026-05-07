@@ -57,7 +57,7 @@ export default async function ColeccionPage() {
                         alt={`ACRO ${p.number}`}
                         width={600}
                         height={600}
-                        className={`relative z-10 w-4/5 h-4/5 object-contain transition-transform duration-700 group-hover:scale-[1.03] mix-blend-multiply ${outOfStock ? 'grayscale opacity-40' : ''}`}
+                        className={`relative z-10 w-4/5 h-4/5 object-contain transition-transform duration-700 group-hover:scale-[1.03] product-img-fade-sm ${outOfStock ? 'grayscale opacity-40' : ''}`}
                       />
                       {outOfStock && (
                         <div className="absolute inset-0 flex items-center justify-center">
