@@ -6,30 +6,24 @@ import { useParams, useRouter } from 'next/navigation'
 import { Footer } from '@/components/Footer'
 import { getProduct } from '@/lib/products'
 import { useCart } from '@/lib/cart'
+import { useCatalog } from '@/lib/useCatalog'
 
 export default function ProductPage() {
   const params = useParams()
   const router = useRouter()
   const product = getProduct(params.id as string)
   const { addItem, items } = useCart()
+  const { getPrice, getStock } = useCatalog()
   const [added, setAdded] = useState(false)
-  const [stock, setStock] = useState<number | null>(null)
   const revealRef = useRef<HTMLDivElement>(null)
 
   const inCart = items.some((i) => i.product.id === product?.id)
-  const outOfStock = stock === 0
+  const catalogStock = product ? getStock(product.id) : null
+  const outOfStock = catalogStock === 0
 
   useEffect(() => {
     if (!product) router.push('/coleccion')
   }, [product, router])
-
-  useEffect(() => {
-    if (!product) return
-    fetch('/api/stock')
-      .then((r) => r.json())
-      .then((data) => setStock(data[product.id] ?? 0))
-      .catch(() => setStock(null))
-  }, [product])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -42,7 +36,8 @@ export default function ProductPage() {
 
   if (!product) return null
 
-  const { copy, theme, images, shooting, price, number } = product
+  const { copy, theme, images, shooting, price: basePrice, number } = product
+  const price = getPrice(product.id, basePrice)
   const is02 = number === '02'
   const isDark = theme.bg !== '#F5EFE0' && theme.bg !== '#FFFFFF'
   const hasVideo = number === '01' || number === '02'
@@ -136,7 +131,7 @@ export default function ProductPage() {
           ) : (
             <button
               onClick={handleAdd}
-              disabled={inCart || stock === null}
+              disabled={inCart || catalogStock === null}
               className="mt-6 w-full max-w-xs font-bebas text-xl tracking-[0.2em] py-4 px-8 border-2 transition-all duration-300 hover:opacity-80 disabled:opacity-40"
               style={{
                 borderColor: txtColor,
@@ -320,7 +315,7 @@ export default function ProductPage() {
         ) : (
           <button
             onClick={handleAdd}
-            disabled={inCart || stock === null}
+            disabled={inCart || catalogStock === null}
             className="font-bebas text-2xl tracking-[0.2em] py-5 px-14 border-2 transition-all duration-300 hover:opacity-70 disabled:opacity-30"
             style={{
               borderColor: txtColor,

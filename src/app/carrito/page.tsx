@@ -4,11 +4,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useCart } from '@/lib/cart'
+import { useCatalog } from '@/lib/useCatalog'
 import { Footer } from '@/components/Footer'
 
 export default function CarritoPage() {
-  const { items, removeItem, total, count } = useCart()
+  const { items, removeItem, count } = useCart()
+  const { getPrice } = useCatalog()
   const router = useRouter()
+
+  const total = items.reduce((acc, { product }) => acc + getPrice(product.id, product.price), 0)
 
   return (
     <>
@@ -67,7 +71,7 @@ export default function CarritoPage() {
                             Pieza Única
                           </p>
                         </div>
-                        <span className="font-bebas text-2xl text-ink">{product.price}€</span>
+                        <span className="font-bebas text-2xl text-ink">{getPrice(product.id, product.price)}€</span>
                       </div>
                     </div>
 
