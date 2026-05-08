@@ -18,13 +18,12 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'ACRO — Crochet Artesanal · Donostia',
-  description:
-    'Complementos de crochet hechos a mano en Donostia. Piezas únicas, irrepetibles. Bolsos, monederos, carteras y llaveros de autor.',
-  keywords: ['crochet', 'artesanal', 'bolsos', 'donostia', 'moda', 'único', 'ACRO'],
+  title: 'ACRO Donostia',
+  description: 'ACRO Donostia',
+  keywords: ['bolsos', 'donostia', 'moda', 'único', 'ACRO'],
   openGraph: {
-    title: 'ACRO — Cada pieza, única',
-    description: 'Complementos de crochet artesanal. Hechos a mano en Donostia.',
+    title: 'ACRO Donostia',
+    description: 'ACRO Donostia',
     type: 'website',
   },
 }
