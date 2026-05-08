@@ -47,6 +47,7 @@ export default function ProductPage() {
   const isDark = theme.bg !== '#F5EFE0' && theme.bg !== '#FFFFFF'
   const hasVideo = number === '01' || number === '02'
   const videoSrc = `/videos/product-${number}.mp4`
+  const heroImage = isDark && images.dark ? images.dark : images.main
 
   const handleAdd = () => {
     addItem(product)
@@ -82,16 +83,16 @@ export default function ProductPage() {
                 loop
                 muted
                 playsInline
-                className={`w-full h-full object-contain ${!isDark ? 'mix-blend-multiply' : ''}`}
+                className="w-full h-full object-contain"
                 poster={images.main}
               />
             ) : (
               <Image
-                src={images.main}
+                src={heroImage}
                 alt={`ACRO ${number}`}
                 width={600}
                 height={600}
-                className="w-full h-full object-contain mix-blend-multiply"
+                className="w-full h-full object-contain"
                 priority
               />
             )}

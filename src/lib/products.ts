@@ -5,6 +5,7 @@ export type Product = {
   stripeProductId?: string
   images: {
     main: string
+    dark?: string
     views: string[]
   }
   shooting: string[]
@@ -142,8 +143,9 @@ export const products: Product[] = [
     number: '03',
     price: 165,
     images: {
-      main: '/images/product-03.png',
-      views: ['/images/product-03.png'],
+      main: '/images/product-03-white.png',
+      dark: '/images/product-03-dark.png',
+      views: ['/images/product-03-white.png'],
     },
     shooting: [
       '/images/shoot-03-1.png',
