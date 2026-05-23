@@ -4,9 +4,19 @@ import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { Footer } from '@/components/Footer'
+import { ScrollVideo } from '@/components/ScrollVideo'
 import { getProduct } from '@/lib/products'
 import { useCart } from '@/lib/cart'
 import { useCatalog } from '@/lib/useCatalog'
+
+// Perceived brightness of a hex colour — drives light/dark styling robustly
+function isDarkColor(hex: string): boolean {
+  const m = hex.replace('#', '')
+  const r = parseInt(m.slice(0, 2), 16)
+  const g = parseInt(m.slice(2, 4), 16)
+  const b = parseInt(m.slice(4, 6), 16)
+  return (r * 299 + g * 587 + b * 114) / 1000 < 140
+}
 
 export default function ProductPage() {
   const params = useParams()
@@ -39,8 +49,9 @@ export default function ProductPage() {
   const { copy, theme, images, shooting, price: basePrice, number } = product
   const price = getPrice(product.id, basePrice)
   const is02 = number === '02'
-  const isDark = theme.bg !== '#F5EFE0' && theme.bg !== '#FFFFFF'
+  const isDark = isDarkColor(theme.bg)
   const hasVideo = number === '01' || number === '02'
+  const sku = `#${/^\d+$/.test(number) ? 'P' + number : number}-001`
   const videoSrc = `/videos/product-${number}.mp4`
   const heroImage = isDark && images.dark ? images.dark : images.main
 
@@ -173,6 +184,24 @@ export default function ProductPage() {
         </div>
       </div>
 
+      {/* ── SPIN SHOWCASE — bolso gigante girando con el scroll ── */}
+      {product.spinVideo && (
+        <ScrollVideo
+          src={product.spinVideo}
+          poster={product.spinPoster ?? heroImage}
+          scrollHeight="320vh"
+          bg="linear-gradient(180deg,#dcdbd6 0%,#aeb1b2 52%,#c4c6c8 100%)"
+          scrim="#c5c6c4"
+          textColor="#241B12"
+          accent={theme.accent}
+          eyebrow={`360° · ${copy.es.tagline.split('.')[0]}`}
+          title={number}
+          sub={copy.es.tagline}
+          meta={`${price}€ · Hecho en Donostia`}
+          side="right"
+        />
+      )}
+
       {/* ── THE WORLD ─────────────────────────── */}
       <section
         className="py-24 md:py-36 px-6 md:px-10"
@@ -297,7 +326,7 @@ export default function ProductPage() {
           className="unique-stamp inline-block mb-10"
           style={{ color: txtColor, borderColor: txtColor, opacity: 0.4 }}
         >
-          Pieza Única · #P{number}-001
+          Pieza Única · {sku}
         </div>
         <p className="font-bebas text-6xl md:text-8xl mb-2" style={{ color: txtColor }}>
           {price}€

@@ -63,6 +63,11 @@ body {
   50% { transform: translateY(-12px); }
 }
 
+@keyframes scrollBarPulse {
+  0%, 100% { transform: translateY(0); opacity: 0.4; }
+  50% { transform: translateY(280%); opacity: 1; }
+}
+
 .animate-intro {
   animation: introFade 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

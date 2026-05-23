@@ -8,6 +8,8 @@ export type Product = {
     dark?: string
     views: string[]
   }
+  spinVideo?: string
+  spinPoster?: string
   shooting: string[]
   copy: {
     es: {
@@ -191,6 +193,68 @@ export const products: Product[] = [
       bg: '#0A0F1E',
       text: '#E4E8EF',
       accent: '#8B9EB7',
+    },
+  },
+  {
+    id: '04',
+    number: 'POP',
+    price: 175,
+    images: {
+      main: '/images/product-04.png',
+      views: [
+        '/images/product-04.png',
+        '/images/product-04-detail-1.jpg',
+        '/images/product-04-detail-2.jpg',
+      ],
+    },
+    spinVideo: '/videos/product-04.mp4',
+    spinPoster: '/images/product-04-spin-poster.jpg',
+    shooting: [
+      '/images/shoot-04-1.jpg',
+      '/images/shoot-04-2.jpg',
+      '/images/shoot-04-3.jpg',
+      '/images/shoot-04-4.jpg',
+      '/images/shoot-04-5.jpg',
+      '/images/shoot-04-6.jpg',
+      '/images/shoot-04-7.jpg',
+      '/images/shoot-04-8.jpg',
+    ],
+    copy: {
+      es: {
+        tagline: 'Cacao tejido. Cuentas de oro. Hora dorada.',
+        description:
+          'Tejida a mano en hilo color cacao, punto a punto. Asa de cuentas doradas que captan la luz a cada paso. Formato shoulder, compacto, contundente. El POP no grita — brilla. Llévalo donde la luz sea buena.',
+        details: [
+          'Hilo color cacao tejido a mano',
+          'Asa de cuentas doradas sobre cordón',
+          'Placa ACRO en dorado',
+          'Cierre de cremallera oculta',
+          'Interior forrado',
+          'Hecho en Donostia',
+        ],
+        world:
+          'El POP nació para la hora dorada. Para los callejones de piedra, el lino tostado, esa luz que cae lenta sobre la Toscana al atardecer. Cacao y oro — el contraste exacto entre tierra y brillo. Cada cuenta atrapa el sol una vez.',
+      },
+      en: {
+        tagline: 'Woven cocoa. Gold beads. Golden hour.',
+        description:
+          'Hand-woven in cocoa yarn, stitch by stitch. A gold-beaded strap that catches the light with every step. Shoulder format — compact, present. The POP does not shout — it glows. Wear it where the light is good.',
+        details: [
+          'Hand-woven cocoa-coloured yarn',
+          'Gold-beaded strap on cord',
+          'Gold ACRO plate',
+          'Hidden zip closure',
+          'Lined interior',
+          'Made in Donostia',
+        ],
+        world:
+          'The POP was born for golden hour. For stone alleys, toasted linen, that slow light falling over Tuscany at dusk. Cocoa and gold — the exact contrast between earth and shine. Each bead catches the sun once.',
+      },
+    },
+    theme: {
+      bg: '#E9E0D1',
+      text: '#2A2018',
+      accent: '#C2A24E',
     },
   },
 ]

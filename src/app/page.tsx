@@ -104,10 +104,16 @@ export default function Home() {
       <ScrollVideo
         src="/videos/product-02.mp4"
         poster="/images/product-02.png"
-        className="w-72 md:w-96 lg:w-[460px] aspect-square object-contain"
         scrollHeight="320vh"
-        number="02"
-        label="02 — LUJO LIMITADO"
+        bg="#0A0A0A"
+        scrim="#0A0A0A"
+        textColor="#F5F5F0"
+        accent="#C0C0C0"
+        eyebrow="Lujo Limitado · 02"
+        title="02"
+        sub="Metal frío. Interior naranja. Una declaración."
+        meta="Pieza Única · Donostia"
+        side="right"
       />
 
       {/* ── COLECCIÓN — blanco puro ───────────────────── */}
