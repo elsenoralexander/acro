@@ -10,6 +10,8 @@ export type Product = {
   }
   spinVideo?: string
   spinPoster?: string
+  spinFrames?: string // frame filename prefix, e.g. '/spin/pop/frame-'
+  spinFrameCount?: number
   shooting: string[]
   copy: {
     es: {
@@ -207,8 +209,8 @@ export const products: Product[] = [
         '/images/product-04-detail-2.jpg',
       ],
     },
-    spinVideo: '/videos/product-04.mp4',
-    spinPoster: '/images/product-04-spin-poster.jpg',
+    spinFrames: '/spin/pop/frame-',
+    spinFrameCount: 72,
     shooting: [
       '/images/shoot-04-1.jpg',
       '/images/shoot-04-2.jpg',

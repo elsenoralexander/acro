@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { Footer } from '@/components/Footer'
-import { ScrollVideo } from '@/components/ScrollVideo'
+import { ScrollSequence } from '@/components/ScrollSequence'
 import { getProduct } from '@/lib/products'
 import { useCart } from '@/lib/cart'
 import { useCatalog } from '@/lib/useCatalog'
@@ -188,25 +188,19 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {/* ── SPIN SHOWCASE — bolso gigante girando con el scroll ── */}
-      {product.spinVideo && (
-        <ScrollVideo
-          src={product.spinVideo}
-          poster={product.spinPoster ?? heroImage}
-          scrollHeight="300vh"
-          bg={isDark ? bgColor : 'linear-gradient(180deg,#D8C9AE 0%,#C3B393 55%,#D2C4A8 100%)'}
-          scrim={isDark ? bgColor : '#CFC0A2'}
-          tint={isDark ? undefined : '#E2CFA6'}
-          tintOpacity={0.6}
-          fadeTop={isDark ? bgColor : '#C7B894'}
-          fadeBottom={isDark ? bgColor : LIGHT_SURFACE}
+      {/* ── SPIN SHOWCASE — bolso recortado girando con el scroll, flota sobre el crema ── */}
+      {product.spinFrames && product.spinFrameCount && (
+        <ScrollSequence
+          framePrefix={product.spinFrames}
+          frameCount={product.spinFrameCount}
+          scrollHeight="320vh"
+          bg={isDark ? bgColor : LIGHT_SURFACE}
           textColor={isDark ? theme.text : '#241B12'}
           accent={theme.accent}
+          watermark={number}
           eyebrow={`360° · ${copy.es.tagline.split('.')[0]}`}
-          title={number}
           sub={copy.es.tagline}
           meta={`${price}€ · Hecho en Donostia`}
-          side="right"
         />
       )}
 
