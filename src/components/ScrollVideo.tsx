@@ -10,6 +10,10 @@ type Props = {
   textColor?: string
   accent?: string
   scrim?: string // solid color used to build the legibility gradient under the text
+  tint?: string // warm/cool colour multiplied over the video to harmonise it with the page palette
+  tintOpacity?: number
+  fadeTop?: string // colour the top edge fades from (blends into the previous section)
+  fadeBottom?: string // colour the bottom edge fades into (blends into the next section)
   eyebrow?: string
   title?: string // giant word(s)
   sub?: string
@@ -25,6 +29,10 @@ export function ScrollVideo({
   textColor = '#F5F5F0',
   accent = '#C0C0C0',
   scrim,
+  tint,
+  tintOpacity = 0.55,
+  fadeTop,
+  fadeBottom,
   eyebrow,
   title,
   sub,
@@ -81,8 +89,8 @@ export function ScrollVideo({
   // the rectangular frame is never visible — no "pegote", no seams.
   const bleedRight = side === 'right'
   const transform = bleedRight
-    ? 'scale(1.62) translateX(14%) rotate(-4deg)'
-    : 'scale(1.62) translateX(-14%) rotate(4deg)'
+    ? 'scale(1.35) translateX(9%) rotate(-3deg)'
+    : 'scale(1.35) translateX(-9%) rotate(3deg)'
 
   const scrimColor = scrim ?? bg
   const textScrim = bleedRight
@@ -103,6 +111,28 @@ export function ScrollVideo({
           className="absolute inset-0 w-full h-full object-cover"
           style={{ transform, transformOrigin: 'center', willChange: 'transform' }}
         />
+
+        {/* Warm/cool tint — pulls the studio backdrop into the page palette */}
+        {tint && (
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{ background: tint, mixBlendMode: 'multiply', opacity: tintOpacity }}
+          />
+        )}
+
+        {/* Edge fades — blend the block into the sections above & below */}
+        {fadeTop && (
+          <div
+            className="absolute inset-x-0 top-0 h-[18vh] pointer-events-none"
+            style={{ background: `linear-gradient(to bottom, ${fadeTop} 0%, transparent 100%)` }}
+          />
+        )}
+        {fadeBottom && (
+          <div
+            className="absolute inset-x-0 bottom-0 h-[20vh] pointer-events-none"
+            style={{ background: `linear-gradient(to top, ${fadeBottom} 0%, transparent 100%)` }}
+          />
+        )}
 
         {/* Legibility gradient on the text side */}
         <div

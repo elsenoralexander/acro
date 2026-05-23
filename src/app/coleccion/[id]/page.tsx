@@ -9,6 +9,10 @@ import { getProduct } from '@/lib/products'
 import { useCart } from '@/lib/cart'
 import { useCatalog } from '@/lib/useCatalog'
 
+// Warm off-white surfaces — keep all light sections in one cohesive palette
+const LIGHT_SURFACE = '#EFE8DA'
+const LIGHT_SURFACE_2 = '#E7DECB'
+
 // Perceived brightness of a hex colour — drives light/dark styling robustly
 function isDarkColor(hex: string): boolean {
   const m = hex.replace('#', '')
@@ -189,10 +193,14 @@ export default function ProductPage() {
         <ScrollVideo
           src={product.spinVideo}
           poster={product.spinPoster ?? heroImage}
-          scrollHeight="320vh"
-          bg="linear-gradient(180deg,#dcdbd6 0%,#aeb1b2 52%,#c4c6c8 100%)"
-          scrim="#c5c6c4"
-          textColor="#241B12"
+          scrollHeight="300vh"
+          bg={isDark ? bgColor : 'linear-gradient(180deg,#D8C9AE 0%,#C3B393 55%,#D2C4A8 100%)'}
+          scrim={isDark ? bgColor : '#CFC0A2'}
+          tint={isDark ? undefined : '#E2CFA6'}
+          tintOpacity={0.6}
+          fadeTop={isDark ? bgColor : '#C7B894'}
+          fadeBottom={isDark ? bgColor : LIGHT_SURFACE}
+          textColor={isDark ? theme.text : '#241B12'}
           accent={theme.accent}
           eyebrow={`360° · ${copy.es.tagline.split('.')[0]}`}
           title={number}
@@ -205,7 +213,7 @@ export default function ProductPage() {
       {/* ── THE WORLD ─────────────────────────── */}
       <section
         className="py-24 md:py-36 px-6 md:px-10"
-        style={{ backgroundColor: isDark ? bgColor : '#F5F5F0' }}
+        style={{ backgroundColor: isDark ? bgColor : LIGHT_SURFACE }}
       >
         <div className="max-w-4xl mx-auto">
           <p className="reveal text-[9px] tracking-[0.6em] uppercase font-sans mb-10" style={{ color: mutedColor }}>
@@ -246,7 +254,7 @@ export default function ProductPage() {
       {/* ── DETAILS ───────────────────────────── */}
       <section
         className="py-20 px-6 md:px-10"
-        style={{ backgroundColor: isDark ? '#0D121F' : '#EDEDE8' }}
+        style={{ backgroundColor: isDark ? '#0D121F' : LIGHT_SURFACE_2 }}
       >
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
           <div>
@@ -301,7 +309,7 @@ export default function ProductPage() {
       {shooting.length > 4 && (
         <div
           className="grid grid-cols-2 md:grid-cols-3 gap-1 p-1"
-          style={{ backgroundColor: is02 ? '#0A0A0A' : '#F5F5F0' }}
+          style={{ backgroundColor: is02 ? '#0A0A0A' : LIGHT_SURFACE }}
         >
           {shooting.slice(4).map((src, i) => (
             <div key={i} className="reveal relative aspect-square overflow-hidden group">
