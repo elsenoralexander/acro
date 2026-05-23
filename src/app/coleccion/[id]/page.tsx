@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { Footer } from '@/components/Footer'
-import { ScrollSequence } from '@/components/ScrollSequence'
+import { BagScene } from '@/components/BagScene'
+import { Reveal, Parallax, MaskReveal, Words } from '@/components/motion'
 import { getProduct } from '@/lib/products'
 import { useCart } from '@/lib/cart'
 import { useCatalog } from '@/lib/useCatalog'
@@ -170,37 +171,40 @@ export default function ProductPage() {
         </div>
       </section>
 
-      {/* ── PRIMERA FOTO — full bleed inmediato, color ── */}
-      <div className="relative w-full aspect-[4/3] md:aspect-[21/9] overflow-hidden">
-        <Image
-          src={shooting[0]}
-          alt={`ACRO ${number}`}
-          fill
-          className="object-cover"
-          sizes="100vw"
-          priority
-        />
-        {/* Overlay sutil con el número */}
+      {/* ── PRIMERA FOTO — full bleed, revelado con máscara + parallax ── */}
+      <MaskReveal from="bottom" className="relative w-full aspect-[4/3] md:aspect-[21/9] overflow-hidden">
+        <Parallax speed={0.18} className="absolute inset-0 -top-[10%] h-[120%]">
+          <Image
+            src={shooting[0]}
+            alt={`ACRO ${number}`}
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority
+          />
+        </Parallax>
         <div className="absolute inset-0 flex items-end justify-end p-8 md:p-14">
           <span className="font-bebas text-[15vw] text-white/10 leading-none select-none">
             {number}
           </span>
         </div>
-      </div>
+      </MaskReveal>
 
-      {/* ── SPIN SHOWCASE — bolso recortado girando con el scroll, flota sobre el crema ── */}
+      {/* ── ESCENA CINEMÁTICA — bolso girando, compuesto con texto/color/forma ── */}
       {product.spinFrames && product.spinFrameCount && (
-        <ScrollSequence
+        <BagScene
           framePrefix={product.spinFrames}
           frameCount={product.spinFrameCount}
-          scrollHeight="320vh"
-          bg={isDark ? bgColor : LIGHT_SURFACE}
-          textColor={isDark ? theme.text : '#241B12'}
-          accent={theme.accent}
-          watermark={number}
+          height="380vh"
+          number={number}
           eyebrow={`360° · ${copy.es.tagline.split('.')[0]}`}
-          sub={copy.es.tagline}
+          beats={copy.es.tagline
+            .split('.')
+            .map((s) => s.trim().toUpperCase())
+            .filter(Boolean)}
           meta={`${price}€ · Hecho en Donostia`}
+          accent={theme.accent}
+          textColor="#241B12"
         />
       )}
 
@@ -214,10 +218,10 @@ export default function ProductPage() {
             El mundo del {number} / The world of {number}
           </p>
           <blockquote
-            className="reveal font-bebas text-[6vw] md:text-[4.5vw] leading-tight"
+            className="font-bebas text-[6vw] md:text-[4.5vw] leading-tight"
             style={{ color: txtColor }}
           >
-            {copy.es.world}
+            <Words text={copy.es.world} stagger={0.03} />
           </blockquote>
           <p
             className="reveal font-sans text-sm leading-relaxed mt-10 max-w-lg italic"
@@ -228,11 +232,11 @@ export default function ProductPage() {
         </div>
       </section>
 
-      {/* ── DOS FOTOS intercaladas — B&W → color hover ── */}
+      {/* ── DOS FOTOS intercaladas — máscara + B&W → color hover ── */}
       {shooting.length > 2 && (
         <div className="grid grid-cols-2 gap-1">
           {[shooting[1], shooting[2]].map((src, i) => (
-            <div key={i} className="reveal relative aspect-[3/4] overflow-hidden group">
+            <MaskReveal key={i} from={i === 0 ? 'left' : 'right'} delay={i * 0.1} className="relative aspect-[3/4] overflow-hidden group">
               <Image
                 src={src}
                 alt={`ACRO ${number} ${i + 2}`}
@@ -240,7 +244,7 @@ export default function ProductPage() {
                 className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-[1.02] group-hover:scale-100"
                 sizes="50vw"
               />
-            </div>
+            </MaskReveal>
           ))}
         </div>
       )}
@@ -286,17 +290,19 @@ export default function ProductPage() {
         </div>
       </section>
 
-      {/* ── FOTO ÚNICA — full bleed, color ───── */}
+      {/* ── FOTO ÚNICA — full bleed, máscara + parallax ───── */}
       {shooting[3] && (
-        <div className="relative w-full aspect-[4/3] md:aspect-[16/9] overflow-hidden">
-          <Image
-            src={shooting[3]}
-            alt={`ACRO ${number} lookbook`}
-            fill
-            className="object-cover"
-            sizes="100vw"
-          />
-        </div>
+        <MaskReveal from="bottom" className="relative w-full aspect-[4/3] md:aspect-[16/9] overflow-hidden">
+          <Parallax speed={0.2} className="absolute inset-0 -top-[10%] h-[120%]">
+            <Image
+              src={shooting[3]}
+              alt={`ACRO ${number} lookbook`}
+              fill
+              className="object-cover"
+              sizes="100vw"
+            />
+          </Parallax>
+        </MaskReveal>
       )}
 
       {/* ── RESTO DE FOTOS — grid B&W → color ── */}
@@ -306,7 +312,7 @@ export default function ProductPage() {
           style={{ backgroundColor: is02 ? '#0A0A0A' : LIGHT_SURFACE }}
         >
           {shooting.slice(4).map((src, i) => (
-            <div key={i} className="reveal relative aspect-square overflow-hidden group">
+            <MaskReveal key={i} from="bottom" delay={(i % 3) * 0.08} className="relative aspect-square overflow-hidden group">
               <Image
                 src={src}
                 alt={`ACRO ${number} ${i + 5}`}
@@ -314,7 +320,7 @@ export default function ProductPage() {
                 className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-[1.02] group-hover:scale-100"
                 sizes="(max-width: 768px) 50vw, 33vw"
               />
-            </div>
+            </MaskReveal>
           ))}
         </div>
       )}

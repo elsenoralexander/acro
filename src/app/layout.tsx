@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Bebas_Neue, Inter } from 'next/font/google'
 import { CartProvider } from '@/components/CartProvider'
 import { Header } from '@/components/Header'
+import { SmoothScroll } from '@/components/SmoothScroll'
 import './globals.css'
 
 const bebasNeue = Bebas_Neue({
@@ -33,8 +34,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="es" className={`${bebasNeue.variable} ${inter.variable}`}>
       <body className="grain">
         <CartProvider>
-          <Header />
-          <main>{children}</main>
+          <SmoothScroll>
+            <Header />
+            <main>{children}</main>
+          </SmoothScroll>
         </CartProvider>
       </body>
     </html>

@@ -1,38 +1,47 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ScrollVideo } from '@/components/ScrollVideo'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { BagScene } from '@/components/BagScene'
+import { Reveal, Parallax, Words, MaskReveal } from '@/components/motion'
 import { Footer } from '@/components/Footer'
 import { products } from '@/lib/products'
 
 export default function Home() {
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add('visible')),
-      { threshold: 0.12 }
-    )
-    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
-    return () => observer.disconnect()
-  }, [])
+  const heroRef = useRef<HTMLElement>(null)
+  const { scrollYProgress: heroP } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  })
+  const acroScale = useTransform(heroP, [0, 1], [1, 1.45])
+  const acroY = useTransform(heroP, [0, 1], ['0%', '-26%'])
+  const acroLetter = useTransform(heroP, [0, 1], ['-0.02em', '0.12em'])
+  const heroFade = useTransform(heroP, [0, 0.7], [1, 0])
+  const gridY = useTransform(heroP, [0, 1], ['0%', '18%'])
 
   return (
     <>
-      {/* ── HERO — blanco puro ────────────────────────── */}
-      <section className="relative min-h-screen bg-white flex flex-col items-center justify-center overflow-hidden">
-        {/* Grid lines sobre blanco */}
-        <div
+      {/* ── HERO ─────────────────────────────────────── */}
+      <section ref={heroRef} className="relative h-screen bg-white flex flex-col items-center justify-center overflow-hidden">
+        <motion.div
           className="absolute inset-0 opacity-[0.04]"
           style={{
+            y: gridY,
             backgroundImage:
               'linear-gradient(#0A0A0A 1px, transparent 1px), linear-gradient(90deg, #0A0A0A 1px, transparent 1px)',
             backgroundSize: '80px 80px',
           }}
         />
 
-        <div className="relative z-10 flex flex-col items-center text-center px-6">
-          <div className="animate-intro mb-6">
+        <motion.div style={{ opacity: heroFade }} className="relative z-10 flex flex-col items-center text-center px-6">
+          <motion.div
+            initial={{ opacity: 0, scale: 1.06 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
+            className="mb-6"
+          >
             <Image
               src="/images/logo-black.png"
               alt="ACRO"
@@ -41,109 +50,119 @@ export default function Home() {
               className="h-16 md:h-20 w-auto object-contain"
               priority
             />
-          </div>
+          </motion.div>
 
-          <h1 className="font-bebas text-[22vw] md:text-[16vw] leading-none text-ink animate-slide-up animate-slide-up-delay-1 tracking-tight">
+          <motion.h1
+            style={{ scale: acroScale, y: acroY, letterSpacing: acroLetter }}
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="font-bebas text-[22vw] md:text-[16vw] leading-none text-ink"
+          >
             ACRO
-          </h1>
+          </motion.h1>
 
-          <p className="text-[10px] md:text-xs tracking-[0.6em] uppercase text-ink/30 animate-slide-up animate-slide-up-delay-2 font-sans mt-3">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.6 }}
+            className="text-[10px] md:text-xs tracking-[0.6em] uppercase text-ink/30 font-sans mt-3"
+          >
             Donostia
-          </p>
+          </motion.p>
+        </motion.div>
 
-          <div className="mt-12 w-px h-20 bg-ink/10 animate-slide-up animate-slide-up-delay-3" />
-          <p className="mt-4 text-[9px] tracking-[0.5em] uppercase text-ink/20 font-sans animate-slide-up animate-slide-up-delay-3">
-            Scroll
-          </p>
-        </div>
+        <motion.div
+          style={{ opacity: heroFade }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+        >
+          <span className="text-[9px] tracking-[0.5em] uppercase text-ink/25 font-sans">Scroll</span>
+          <motion.div
+            className="w-px h-14 bg-ink/15"
+            animate={{ scaleY: [0.3, 1, 0.3], originY: 0 }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        </motion.div>
       </section>
 
-      {/* ── MANIFESTO — negro ─────────────────────────── */}
-      <section className="bg-ink text-chalk py-28 md:py-44 px-6 md:px-10 overflow-hidden">
+      {/* ── MANIFESTO ────────────────────────────────── */}
+      <section className="bg-ink text-chalk py-28 md:py-48 px-6 md:px-10 overflow-hidden">
         <div className="max-w-5xl mx-auto">
-          <h2 className="reveal font-bebas text-[12vw] md:text-[8vw] leading-none">
-            CADA PIEZA
+          <h2 className="font-bebas text-[12vw] md:text-[8vw] leading-[0.9]">
+            <Words text="CADA PIEZA" />
             <br />
-            <span className="text-chalk/15">UNA SOLA VEZ.</span>
+            <span className="text-chalk/15">
+              <Words text="UNA SOLA VEZ." delay={0.2} />
+            </span>
           </h2>
-          <div className="reveal mt-14 flex flex-col md:flex-row gap-8 md:gap-16 max-w-3xl">
-            <p className="font-sans text-sm text-chalk/50 leading-relaxed flex-1">
-              No hay fábrica. No hay serie. Existe una, y cuando se va, no vuelve.
-              Cada pieza sale de las mismas manos — una a una, en Donostia.
-            </p>
-            <p className="font-sans text-sm text-chalk/25 leading-relaxed flex-1 italic">
-              No factory. No series. There is one, and when it goes, it does not return.
-              Each piece comes from the same hands — one by one, in Donostia.
-            </p>
+          <div className="mt-14 flex flex-col md:flex-row gap-8 md:gap-16 max-w-3xl">
+            <Reveal as="div" className="flex-1" delay={0.1}>
+              <p className="font-sans text-sm text-chalk/50 leading-relaxed">
+                No hay fábrica. No hay serie. Existe una, y cuando se va, no vuelve.
+                Cada pieza sale de las mismas manos — una a una, en Donostia.
+              </p>
+            </Reveal>
+            <Reveal as="div" className="flex-1" delay={0.25}>
+              <p className="font-sans text-sm text-chalk/25 leading-relaxed italic">
+                No factory. No series. There is one, and when it goes, it does not return.
+                Each piece comes from the same hands — one by one, in Donostia.
+              </p>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* ── MARQUEE — negro ───────────────────────────── */}
+      {/* ── MARQUEE ──────────────────────────────────── */}
       <div className="bg-ink border-y border-chalk/8 py-4 overflow-hidden">
         <div className="marquee-track whitespace-nowrap">
           {[...Array(6)].map((_, i) => (
-            <span
-              key={i}
-              className="inline-flex items-center gap-8 px-8 font-bebas text-2xl text-chalk/15 tracking-widest"
-            >
-              PIEZA ÚNICA
-              <span className="text-chalk/8">·</span>
-              ONE OF A KIND
-              <span className="text-chalk/8">·</span>
-              DONOSTIA
-              <span className="text-chalk/8">·</span>
-              HECHO A MANO
-              <span className="text-chalk/8">·</span>
+            <span key={i} className="inline-flex items-center gap-8 px-8 font-bebas text-2xl text-chalk/15 tracking-widest">
+              PIEZA ÚNICA<span className="text-chalk/8">·</span>ONE OF A KIND<span className="text-chalk/8">·</span>DONOSTIA<span className="text-chalk/8">·</span>HECHO A MANO<span className="text-chalk/8">·</span>
             </span>
           ))}
         </div>
       </div>
 
-      {/* ── SCROLL-DRIVEN VIDEO — negro ───────────────── */}
-      <ScrollVideo
-        src="/videos/product-02.mp4"
-        poster="/images/product-02.png"
-        scrollHeight="320vh"
-        bg="#0A0A0A"
-        scrim="#0A0A0A"
-        textColor="#F5F5F0"
-        accent="#C0C0C0"
-        eyebrow="Lujo Limitado · 02"
-        title="02"
-        sub="Metal frío. Interior naranja. Una declaración."
-        meta="Pieza Única · Donostia"
-        side="right"
+      {/* ── ESCENA CINEMÁTICA — el bolso POP gira con el scroll ── */}
+      <BagScene
+        framePrefix="/spin/pop/frame-"
+        frameCount={72}
+        height="380vh"
+        number="POP"
+        eyebrow="ACRO · El nuevo POP"
+        beats={['CACAO\nTEJIDO', 'CUENTAS\nDE ORO', 'HORA\nDORADA']}
+        meta="Pieza Única · 175€ · Donostia"
+        accent="#C2A24E"
+        textColor="#241B12"
       />
 
-      {/* ── COLECCIÓN — blanco puro ───────────────────── */}
+      {/* ── COLECCIÓN ────────────────────────────────── */}
       <section className="bg-white py-24 md:py-36 px-6 md:px-10">
         <div className="max-w-6xl mx-auto">
-          <p className="reveal text-[9px] tracking-[0.6em] uppercase text-ink/25 font-sans mb-16">
-            Colección / Collection
-          </p>
+          <Reveal>
+            <p className="text-[9px] tracking-[0.6em] uppercase text-ink/25 font-sans mb-16">
+              Colección / Collection
+            </p>
+          </Reveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
-            {products.map((p) => (
-              <Link key={p.id} href={`/coleccion/${p.id}`} className="group block">
-                <article className="reveal relative">
-                  {/* Imagen limpia sobre blanco — sin fondo de color */}
+            {products.map((p, i) => (
+              <Reveal key={p.id} delay={(i % 2) * 0.12} y={60}>
+                <Link href={`/coleccion/${p.id}`} className="group block">
                   <div className="relative aspect-square flex items-center justify-center overflow-hidden bg-white">
-                    <span
-                      className="absolute font-bebas text-[20vw] md:text-[14vw] select-none pointer-events-none text-ink/[0.03]"
-                    >
+                    <span className="absolute font-bebas text-[20vw] md:text-[14vw] select-none pointer-events-none text-ink/[0.03]">
                       {p.number}
                     </span>
-                    <Image
-                      src={p.images.main}
-                      alt={`ACRO ${p.number}`}
-                      width={520}
-                      height={520}
-                      className="relative z-10 w-4/5 h-4/5 object-contain transition-transform duration-700 group-hover:scale-[1.03] mix-blend-multiply"
-                    />
+                    <Parallax speed={0.12} className="relative z-10 w-4/5 h-4/5 flex items-center justify-center">
+                      <Image
+                        src={p.images.main}
+                        alt={`ACRO ${p.number}`}
+                        width={520}
+                        height={520}
+                        className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-[1.05] mix-blend-multiply"
+                      />
+                    </Parallax>
                   </div>
-
-                  {/* Info bajo la imagen */}
                   <div className="mt-5 flex items-baseline justify-between border-t border-ink/8 pt-5">
                     <div>
                       <span className="font-bebas text-5xl text-ink leading-none">{p.number}</span>
@@ -155,27 +174,31 @@ export default function Home() {
                       <span className="font-bebas text-3xl text-ink">{p.price}€</span>
                     </div>
                   </div>
-                </article>
-              </Link>
+                </Link>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── CTA — negro ───────────────────────────────── */}
-      <section className="bg-ink text-chalk py-28 md:py-40 px-6 flex flex-col items-center text-center">
-        <div className="reveal unique-stamp border-chalk/20 text-chalk/30 mb-12">
-          Una pieza · Una vez · Once
-        </div>
-        <h2 className="reveal font-bebas text-[12vw] md:text-[7vw] leading-none mb-10">
-          ELIGE LA TUYA
+      {/* ── CTA ──────────────────────────────────────── */}
+      <section className="bg-ink text-chalk py-28 md:py-48 px-6 flex flex-col items-center text-center overflow-hidden">
+        <Reveal>
+          <div className="unique-stamp border-chalk/20 text-chalk/30 mb-12">
+            Una pieza · Una vez · Once
+          </div>
+        </Reveal>
+        <h2 className="font-bebas text-[12vw] md:text-[7vw] leading-none mb-10">
+          <Words text="ELIGE LA TUYA" />
         </h2>
-        <Link
-          href="/coleccion"
-          className="reveal inline-block font-bebas text-xl tracking-[0.3em] px-12 py-4 border border-chalk/20 text-chalk/60 hover:border-chalk hover:text-chalk transition-all duration-500"
-        >
-          Ver Colección
-        </Link>
+        <Reveal delay={0.2}>
+          <Link
+            href="/coleccion"
+            className="inline-block font-bebas text-xl tracking-[0.3em] px-12 py-4 border border-chalk/20 text-chalk/60 hover:border-chalk hover:text-chalk transition-all duration-500"
+          >
+            Ver Colección
+          </Link>
+        </Reveal>
       </section>
 
       <Footer />
