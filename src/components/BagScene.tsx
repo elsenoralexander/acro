@@ -39,10 +39,10 @@ function Beat({
 }) {
   const opacity = useTransform(
     progress,
-    [center - 0.2, center - 0.1, center + 0.1, center + 0.2],
+    [center - 0.13, center - 0.05, center + 0.05, center + 0.13],
     [0, 1, 1, 0]
   )
-  const y = useTransform(progress, [center - 0.2, center + 0.2], [80, -80])
+  const y = useTransform(progress, [center - 0.13, center + 0.13], [70, -70])
   const lines = typeof children === 'string' ? children.split('\n') : [children]
   return (
     <motion.h3

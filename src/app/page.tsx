@@ -5,7 +5,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { BagScene } from '@/components/BagScene'
-import { Reveal, Parallax, Words, MaskReveal } from '@/components/motion'
+import { ConvergeScene, HorizontalGallery } from '@/components/scenes'
+import { Reveal, Parallax, Words } from '@/components/motion'
 import { Footer } from '@/components/Footer'
 import { products } from '@/lib/products'
 
@@ -123,6 +124,23 @@ export default function Home() {
         </div>
       </div>
 
+      {/* ── CONVERGENCIA — las piezas entran desde los lados y se juntan ── */}
+      <ConvergeScene
+        bg="#0A0A0A"
+        textColor="#F5F5F0"
+        eyebrow="Tres piezas · Una intención"
+        title={'PIEZA\nÚNICA'}
+        sub="No hay serie. No hay reposición. Existe una, y cuando se va, no vuelve."
+        images={[
+          '/images/shoot-04-1.jpg',
+          '/images/shoot-01-1.jpg',
+          '/images/shoot-02-1.jpg',
+          '/images/shoot-04-5.jpg',
+          '/images/shoot-03-1.png',
+          '/images/shoot-04-7.jpg',
+        ]}
+      />
+
       {/* ── ESCENA CINEMÁTICA — el bolso POP gira con el scroll ── */}
       <BagScene
         framePrefix="/spin/pop/frame-"
@@ -134,6 +152,21 @@ export default function Home() {
         meta="Pieza Única · 175€ · Donostia"
         accent="#C2A24E"
         textColor="#241B12"
+      />
+
+      {/* ── LOOKBOOK — galería horizontal con pin ── */}
+      <HorizontalGallery
+        bg="#0A0A0A"
+        textColor="#F5F5F0"
+        label="Lookbook · Toscana"
+        images={[
+          '/images/shoot-04-2.jpg',
+          '/images/shoot-04-3.jpg',
+          '/images/shoot-04-4.jpg',
+          '/images/shoot-04-6.jpg',
+          '/images/shoot-04-8.jpg',
+          '/images/shoot-04-1.jpg',
+        ]}
       />
 
       {/* ── COLECCIÓN ────────────────────────────────── */}

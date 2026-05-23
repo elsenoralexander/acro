@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { Footer } from '@/components/Footer'
 import { BagScene } from '@/components/BagScene'
+import { HorizontalGallery } from '@/components/scenes'
 import { Reveal, Parallax, MaskReveal, Words } from '@/components/motion'
 import { getProduct } from '@/lib/products'
 import { useCart } from '@/lib/cart'
@@ -305,24 +306,14 @@ export default function ProductPage() {
         </MaskReveal>
       )}
 
-      {/* ── RESTO DE FOTOS — grid B&W → color ── */}
+      {/* ── LOOKBOOK — galería horizontal con pin ── */}
       {shooting.length > 4 && (
-        <div
-          className="grid grid-cols-2 md:grid-cols-3 gap-1 p-1"
-          style={{ backgroundColor: is02 ? '#0A0A0A' : LIGHT_SURFACE }}
-        >
-          {shooting.slice(4).map((src, i) => (
-            <MaskReveal key={i} from="bottom" delay={(i % 3) * 0.08} className="relative aspect-square overflow-hidden group">
-              <Image
-                src={src}
-                alt={`ACRO ${number} ${i + 5}`}
-                fill
-                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-[1.02] group-hover:scale-100"
-                sizes="(max-width: 768px) 50vw, 33vw"
-              />
-            </MaskReveal>
-          ))}
-        </div>
+        <HorizontalGallery
+          bg={isDark ? bgColor : LIGHT_SURFACE_2}
+          textColor={txtColor}
+          label={`Lookbook · ${number}`}
+          images={shooting.slice(4)}
+        />
       )}
 
       {/* ── BOTTOM CTA ────────────────────────── */}
