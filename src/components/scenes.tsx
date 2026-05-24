@@ -22,20 +22,21 @@ function ConvergeItem({
 }) {
   const side = index % 2 === 0 ? -1 : 1
   const mid = (total - 1) / 2
-  const startX = `${side * 135}vw`
-  const targetX = `${(index - mid) * 10}vw`
-  const startRot = `${side * -22}deg`
+  // Already clearly peeking from the edges at progress 0 — never an empty wait.
+  const startX = `${side * 50}vw`
+  const targetX = `${(index - mid) * 11}vw`
+  const startRot = `${side * -14}deg`
   const targetRot = `${(index - mid) * 4}deg`
 
-  const x = useTransform(progress, [0.02, 0.55], [startX, targetX])
-  const rotate = useTransform(progress, [0.02, 0.55], [startRot, targetRot])
-  const scale = useTransform(progress, [0.02, 0.55], [0.65, 1])
+  const x = useTransform(progress, [0, 0.42, 1], [startX, targetX, targetX])
+  const rotate = useTransform(progress, [0, 0.42], [startRot, targetRot])
+  const scale = useTransform(progress, [0, 0.42, 1], [0.78, 1, 1.12])
   const yOff = index % 2 === 0 ? '-3vh' : '4vh'
 
   return (
     <motion.div
       style={{ x, rotate, scale, y: yOff, zIndex: index }}
-      className="absolute w-[58vw] sm:w-[40vw] md:w-[24vw] aspect-[3/4] overflow-hidden shadow-2xl"
+      className="absolute w-[62vw] sm:w-[42vw] md:w-[25vw] aspect-[3/4] overflow-hidden shadow-2xl"
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={src} alt="" className="w-full h-full object-cover" loading="lazy" />
@@ -45,7 +46,7 @@ function ConvergeItem({
 
 export function ConvergeScene({
   images,
-  height = '300vh',
+  height = '185vh',
   bg = '#0A0A0A',
   textColor = '#F5F5F0',
   eyebrow,
@@ -63,9 +64,12 @@ export function ConvergeScene({
   const ref = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] })
 
-  const titleOpacity = useTransform(scrollYProgress, [0.5, 0.68, 0.92, 1], [0, 1, 1, 0.6])
-  const titleScale = useTransform(scrollYProgress, [0.5, 0.7], [1.15, 1])
-  const eyebrowOpacity = useTransform(scrollYProgress, [0, 0.08, 0.45, 0.55], [0, 1, 1, 0])
+  const titleOpacity = useTransform(scrollYProgress, [0.34, 0.5, 1], [0, 1, 1])
+  const titleScale = useTransform(scrollYProgress, [0.34, 0.54, 1], [1.18, 1, 1.06])
+  const titleY = useTransform(scrollYProgress, [0.54, 1], ['0vh', '-4vh'])
+  const eyebrowOpacity = useTransform(scrollYProgress, [0, 0.06, 0.32, 0.42], [0, 1, 1, 0])
+  const subOpacity = useTransform(scrollYProgress, [0.46, 0.6], [0, 1])
+  const subY = useTransform(scrollYProgress, [0.46, 0.6], [40, 0])
 
   return (
     <section ref={ref} style={{ height, background: bg }} className="relative">
@@ -73,8 +77,8 @@ export function ConvergeScene({
         {/* Headline behind the cluster */}
         {title && (
           <motion.h2
-            style={{ opacity: titleOpacity, scale: titleScale, color: textColor }}
-            className="absolute z-0 font-bebas leading-[0.82] text-center px-6 text-[16vw] md:text-[11vw] pointer-events-none select-none"
+            style={{ opacity: titleOpacity, scale: titleScale, y: titleY, color: textColor }}
+            className="absolute z-0 font-bebas leading-[0.82] text-center px-6 text-[20vw] md:text-[13vw] pointer-events-none select-none"
           >
             {title.split('\n').map((l, i) => (
               <span key={i} className="block">
@@ -103,13 +107,16 @@ export function ConvergeScene({
           </motion.div>
         )}
 
-        {/* Sub caption */}
+        {/* Sub caption — bigger, slides up into place */}
         {sub && (
           <motion.div
-            style={{ opacity: titleOpacity }}
-            className="absolute bottom-[10vh] left-1/2 -translate-x-1/2 text-center px-6 z-20"
+            style={{ opacity: subOpacity, y: subY }}
+            className="absolute bottom-[9vh] left-1/2 -translate-x-1/2 text-center px-6 z-20 w-full"
           >
-            <p className="font-sans text-sm md:text-base leading-relaxed max-w-md" style={{ color: textColor, opacity: 0.7 }}>
+            <p
+              className="font-bebas text-3xl md:text-5xl leading-[0.95] max-w-3xl mx-auto"
+              style={{ color: textColor }}
+            >
               {sub}
             </p>
           </motion.div>

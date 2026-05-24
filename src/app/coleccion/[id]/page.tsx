@@ -196,7 +196,9 @@ export default function ProductPage() {
         <BagScene
           framePrefix={product.spinFrames}
           frameCount={product.spinFrameCount}
-          height="380vh"
+          height="320vh"
+          spinFraction={0.18}
+          startFrame={6}
           number={number}
           eyebrow={`360° · ${copy.es.tagline.split('.')[0]}`}
           beats={copy.es.tagline

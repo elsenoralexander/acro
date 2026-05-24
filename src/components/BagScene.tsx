@@ -15,6 +15,8 @@ type Props = {
   frameExt?: string
   pad?: number
   height?: string // scroll travel for the pinned scene
+  spinFraction?: number // fraction of the full 360° used (0.18 ≈ a gentle ~65° turn)
+  startFrame?: number // first frame shown (pick a flattering 3/4 angle)
   number: string // giant watermark
   eyebrow?: string
   beats?: string[] // up to 3 narrative lines that cross-fade through the spin
@@ -64,6 +66,8 @@ export function BagScene({
   frameExt = 'webp',
   pad = 3,
   height = '440vh',
+  spinFraction = 1,
+  startFrame = 0,
   number,
   eyebrow,
   beats = [],
@@ -77,7 +81,7 @@ export function BagScene({
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const imagesRef = useRef<HTMLImageElement[]>([])
   const loadedRef = useRef<boolean[]>([])
-  const frameRef = useRef(0)
+  const frameRef = useRef(startFrame)
   const drawRef = useRef<() => void>(() => {})
 
   const { scrollYProgress } = useScroll({
@@ -155,7 +159,9 @@ export function BagScene({
   }, [framePrefix, frameCount, frameExt, pad])
 
   useMotionValueEvent(scrollYProgress, 'change', (p) => {
-    const f = Math.max(0, Math.min(frameCount - 1, Math.round(p * (frameCount - 1))))
+    // Only a gentle turn: map the whole scroll to a small slice of the 360°.
+    const span = Math.max(1, Math.round(frameCount * spinFraction))
+    const f = (startFrame + Math.round(p * span)) % frameCount
     if (f !== frameRef.current) {
       frameRef.current = f
       drawRef.current()
@@ -202,7 +208,7 @@ export function BagScene({
         {/* The bag — rotates with scroll (canvas), scales subtly (motion) */}
         <motion.canvas
           ref={canvasRef}
-          style={{ scale: bagScale, opacity: bagOpacity, height: 'min(60vh, 580px)', width: 'min(88vw, 420px)' }}
+          style={{ scale: bagScale, opacity: bagOpacity, height: 'min(86vh, 820px)', width: 'min(96vw, 640px)' }}
           className="relative z-10"
         />
 
