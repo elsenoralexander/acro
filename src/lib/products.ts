@@ -40,6 +40,7 @@ export const products: Product[] = [
       main: '/images/product-01.png',
       views: ['/images/product-01.png'],
     },
+    cutout: '/spin/cutout-01.png',
     shooting: [
       '/images/shoot-01-1.jpg',
       '/images/shoot-01-2.jpg',
@@ -91,6 +92,7 @@ export const products: Product[] = [
       main: '/images/product-02.png',
       views: ['/images/product-02.png'],
     },
+    cutout: '/spin/cutout-02.png',
     shooting: [
       '/images/shoot-02-1.jpg',
       '/images/shoot-02-2.jpg',
@@ -148,6 +150,7 @@ export const products: Product[] = [
       dark: '/images/product-03-dark.png',
       views: ['/images/product-03-white.png'],
     },
+    cutout: '/spin/cutout-03.png',
     shooting: [
       '/images/shoot-03-1.png',
       '/images/shoot-03-2.png',

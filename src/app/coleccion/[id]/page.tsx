@@ -196,7 +196,7 @@ export default function ProductPage() {
         <ProductScene
           image={product.cutout}
           alt={`ACRO ${number}`}
-          height="320vh"
+          height="340vh"
           number={number}
           eyebrow={copy.es.tagline.split('.')[0]}
           beats={copy.es.tagline
@@ -205,7 +205,9 @@ export default function ProductPage() {
             .filter(Boolean)}
           meta={`${price}€ · Hecho en Donostia`}
           accent={theme.accent}
-          textColor="#241B12"
+          bgFrom={isDark ? bgColor : '#EFE8DA'}
+          bgTo={isDark ? bgColor : '#E6D8BE'}
+          textColor={isDark ? txtColor : '#241B12'}
         />
       )}
 
