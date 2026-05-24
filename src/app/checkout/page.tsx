@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useCart } from '@/lib/cart'
@@ -35,10 +35,11 @@ export default function CheckoutPage() {
     }
   }
 
-  if (items.length === 0) {
-    router.push('/carrito')
-    return null
-  }
+  useEffect(() => {
+    if (items.length === 0) router.push('/carrito')
+  }, [items.length, router])
+
+  if (items.length === 0) return null
 
   return (
     <div className="min-h-screen bg-chalk text-ink pt-32 pb-24 px-6 md:px-10">
@@ -53,15 +54,15 @@ export default function CheckoutPage() {
           {items.map(({ product }) => (
             <div key={product.id} className="flex items-center gap-5 border-b border-ink/10 pb-6">
               <div
-                className="w-20 h-20 flex-shrink-0 flex items-center justify-center"
+                className="w-20 h-20 flex-shrink-0 flex items-center justify-center overflow-hidden"
                 style={{ backgroundColor: product.theme.bg }}
               >
                 <Image
-                  src={product.images.main}
+                  src={product.cutout ?? product.images.main}
                   alt={`ACRO ${product.number}`}
-                  width={64}
-                  height={64}
-                  className="w-12 h-12 object-contain"
+                  width={100}
+                  height={100}
+                  className="w-[78%] h-[78%] object-contain"
                 />
               </div>
               <div className="flex-1">

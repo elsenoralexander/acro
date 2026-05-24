@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useCart } from '@/lib/cart'
 import { useCatalog } from '@/lib/useCatalog'
 import { Footer } from '@/components/Footer'
+import { Reveal } from '@/components/motion'
 
 export default function CarritoPage() {
   const { items, removeItem, count } = useCart()
@@ -43,19 +44,20 @@ export default function CarritoPage() {
             <>
               {/* Items */}
               <div className="space-y-8 mb-12">
-                {items.map(({ product }) => (
-                  <div key={product.id} className="flex items-center gap-6 border-b border-ink/10 pb-8">
-                    {/* Thumbnail */}
+                {items.map(({ product }, i) => (
+                  <Reveal as="div" key={product.id} delay={i * 0.06} y={24}>
+                  <div className="flex items-center gap-6 border-b border-ink/10 pb-8">
+                    {/* Thumbnail — recorte sobre el color de la pieza */}
                     <div
-                      className="w-24 h-24 flex-shrink-0 flex items-center justify-center"
+                      className="w-24 h-24 flex-shrink-0 flex items-center justify-center overflow-hidden"
                       style={{ backgroundColor: product.theme.bg }}
                     >
                       <Image
-                        src={product.images.main}
+                        src={product.cutout ?? product.images.main}
                         alt={`ACRO ${product.number}`}
-                        width={80}
-                        height={80}
-                        className="w-16 h-16 object-contain"
+                        width={120}
+                        height={120}
+                        className="w-[78%] h-[78%] object-contain"
                       />
                     </div>
 
@@ -83,6 +85,7 @@ export default function CarritoPage() {
                       Quitar
                     </button>
                   </div>
+                  </Reveal>
                 ))}
               </div>
 
