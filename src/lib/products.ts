@@ -8,10 +8,7 @@ export type Product = {
     dark?: string
     views: string[]
   }
-  spinVideo?: string
-  spinPoster?: string
-  spinFrames?: string // frame filename prefix, e.g. '/spin/pop/frame-'
-  spinFrameCount?: number
+  cutout?: string // high-def transparent PNG for the motion-graphics scene
   shooting: string[]
   copy: {
     es: {
@@ -209,8 +206,7 @@ export const products: Product[] = [
         '/images/product-04-detail-2.jpg',
       ],
     },
-    spinFrames: '/spin/pop/frame-',
-    spinFrameCount: 72,
+    cutout: '/spin/pop-cutout.png',
     shooting: [
       '/images/shoot-04-1.jpg',
       '/images/shoot-04-2.jpg',

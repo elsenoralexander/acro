@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { BagScene } from '@/components/BagScene'
+import { ProductScene } from '@/components/ProductScene'
 import { ConvergeScene } from '@/components/scenes'
 import { Reveal, Parallax, Words, MaskReveal } from '@/components/motion'
 import { Footer } from '@/components/Footer'
@@ -132,13 +132,11 @@ export default function Home() {
         ]}
       />
 
-      {/* ── ESCENA CINEMÁTICA — el bolso POP, giro mínimo, gigante ── */}
-      <BagScene
-        framePrefix="/spin/pop/frame-"
-        frameCount={72}
+      {/* ── ESCENA DEL BOLSO — PNG nítido + motion graphics ── */}
+      <ProductScene
+        image="/spin/pop-cutout.png"
+        alt="ACRO POP"
         height="300vh"
-        spinFraction={0.16}
-        startFrame={6}
         number="POP"
         eyebrow="ACRO · El nuevo POP"
         beats={['CACAO\nTEJIDO', 'CUENTAS\nDE ORO', 'HORA\nDORADA']}

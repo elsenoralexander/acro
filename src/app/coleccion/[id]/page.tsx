@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { Footer } from '@/components/Footer'
-import { BagScene } from '@/components/BagScene'
+import { ProductScene } from '@/components/ProductScene'
 import { HorizontalGallery } from '@/components/scenes'
 import { Reveal, Parallax, MaskReveal, Words } from '@/components/motion'
 import { getProduct } from '@/lib/products'
@@ -191,16 +191,14 @@ export default function ProductPage() {
         </div>
       </MaskReveal>
 
-      {/* ── ESCENA CINEMÁTICA — bolso girando, compuesto con texto/color/forma ── */}
-      {product.spinFrames && product.spinFrameCount && (
-        <BagScene
-          framePrefix={product.spinFrames}
-          frameCount={product.spinFrameCount}
+      {/* ── ESCENA DEL BOLSO — PNG nítido + motion graphics ── */}
+      {product.cutout && (
+        <ProductScene
+          image={product.cutout}
+          alt={`ACRO ${number}`}
           height="320vh"
-          spinFraction={0.18}
-          startFrame={6}
           number={number}
-          eyebrow={`360° · ${copy.es.tagline.split('.')[0]}`}
+          eyebrow={copy.es.tagline.split('.')[0]}
           beats={copy.es.tagline
             .split('.')
             .map((s) => s.trim().toUpperCase())
