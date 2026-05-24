@@ -6,7 +6,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { Footer } from '@/components/Footer'
 import { ProductScene } from '@/components/ProductScene'
 import { ConvergeScene } from '@/components/scenes'
-import { Reveal, Parallax, Words } from '@/components/motion'
+import { Reveal, Parallax, Words, MaskReveal } from '@/components/motion'
 import { getProduct } from '@/lib/products'
 import { useCart } from '@/lib/cart'
 import { useCatalog } from '@/lib/useCatalog'
@@ -158,6 +158,30 @@ export default function ProductPage() {
           sub={copy.es.tagline.split('.')[0].toUpperCase()}
           images={shooting.slice(1, 7)}
         />
+      )}
+
+      {/* ── FOTOS FIJAS — galería estática para apreciar el shooting ── */}
+      {shooting.length > 3 && (
+        <section className="px-2 md:px-3 pt-2 md:pt-3" style={{ backgroundColor: isDark ? bgColor : '#EFE8DA' }}>
+          <MaskReveal from="bottom" className="mb-2 md:mb-3">
+            <p className="font-sans text-[9px] tracking-[0.5em] uppercase text-center py-6" style={{ color: txtColor, opacity: 0.4 }}>
+              El shooting · {number}
+            </p>
+          </MaskReveal>
+          <div className="grid grid-cols-2 gap-2 md:gap-3">
+            {shooting.slice(0, shooting.length >= 6 ? 6 : 4).map((src, i) => (
+              <div key={i} className="relative aspect-[4/5] overflow-hidden group">
+                <Image
+                  src={src}
+                  alt={`ACRO ${number} lookbook ${i + 1}`}
+                  fill
+                  className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-100 group-hover:scale-[1.05]"
+                  sizes="50vw"
+                />
+              </div>
+            ))}
+          </div>
+        </section>
       )}
 
       {/* ── DETALLES — fondo lleno, sin huecos ── */}

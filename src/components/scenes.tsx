@@ -65,29 +65,12 @@ export function ConvergeScene({
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] })
 
   const titleOpacity = useTransform(scrollYProgress, [0.34, 0.5, 1], [0, 1, 1])
-  const titleScale = useTransform(scrollYProgress, [0.34, 0.54, 1], [1.18, 1, 1.06])
-  const titleY = useTransform(scrollYProgress, [0.54, 1], ['0vh', '-4vh'])
-  const eyebrowOpacity = useTransform(scrollYProgress, [0, 0.06, 0.32, 0.42], [0, 1, 1, 0])
-  const subOpacity = useTransform(scrollYProgress, [0.46, 0.6], [0, 1])
-  const subY = useTransform(scrollYProgress, [0.46, 0.6], [40, 0])
+  const titleScale = useTransform(scrollYProgress, [0.34, 0.54, 1], [1.16, 1, 1.05])
+  const eyebrowOpacity = useTransform(scrollYProgress, [0, 0.06, 0.34, 0.44], [0, 1, 1, 0])
 
   return (
     <section ref={ref} style={{ height, background: bg }} className="relative">
       <div className="sticky top-0 h-screen overflow-hidden flex items-center justify-center">
-        {/* Headline behind the cluster */}
-        {title && (
-          <motion.h2
-            style={{ opacity: titleOpacity, scale: titleScale, y: titleY, color: textColor }}
-            className="absolute z-0 font-bebas leading-[0.82] text-center px-6 text-[20vw] md:text-[13vw] pointer-events-none select-none"
-          >
-            {title.split('\n').map((l, i) => (
-              <span key={i} className="block">
-                {l}
-              </span>
-            ))}
-          </motion.h2>
-        )}
-
         {/* Converging images */}
         <div className="absolute inset-0 z-10 flex items-center justify-center">
           {images.slice(0, 6).map((src, i) => (
@@ -95,30 +78,33 @@ export function ConvergeScene({
           ))}
         </div>
 
-        {/* Eyebrow */}
+        {/* Eyebrow — top */}
         {eyebrow && (
-          <motion.div
-            style={{ opacity: eyebrowOpacity }}
-            className="absolute top-[12vh] left-1/2 -translate-x-1/2 text-center px-6 z-20"
-          >
+          <motion.div style={{ opacity: eyebrowOpacity }} className="absolute top-[11vh] left-1/2 -translate-x-1/2 text-center px-6 z-30">
             <span className="font-sans text-[10px] md:text-[11px] tracking-[0.55em] uppercase" style={{ color: textColor, opacity: 0.6 }}>
               {eyebrow}
             </span>
           </motion.div>
         )}
 
-        {/* Sub caption — bigger, slides up into place */}
-        {sub && (
+        {/* Headline OVER the cluster — mix-blend keeps it legible on any photo */}
+        {(title || sub) && (
           <motion.div
-            style={{ opacity: subOpacity, y: subY }}
-            className="absolute bottom-[9vh] left-1/2 -translate-x-1/2 text-center px-6 z-20 w-full"
+            style={{ opacity: titleOpacity, scale: titleScale }}
+            className="absolute inset-0 z-30 flex flex-col items-center justify-center text-center px-6 pointer-events-none"
           >
-            <p
-              className="font-bebas text-3xl md:text-5xl leading-[0.95] max-w-3xl mx-auto"
-              style={{ color: textColor }}
-            >
-              {sub}
-            </p>
+            <div className="mix-blend-difference text-white">
+              {title && (
+                <h2 className="font-bebas leading-[0.8] text-[22vw] md:text-[14vw]">
+                  {title.split('\n').map((l, i) => (
+                    <span key={i} className="block">
+                      {l}
+                    </span>
+                  ))}
+                </h2>
+              )}
+              {sub && <p className="font-bebas text-3xl md:text-5xl leading-[0.95] mt-3 max-w-3xl mx-auto">{sub}</p>}
+            </div>
           </motion.div>
         )}
       </div>
