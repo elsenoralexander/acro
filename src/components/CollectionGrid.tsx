@@ -40,11 +40,16 @@ export function CollectionGrid() {
             const outOfStock = stock === 0
             const price = getPrice(p.id, p.price)
             return (
-              <Link key={p.id} href={`/coleccion/${p.id}`} className={`group block ${i % 2 === 1 ? 'md:mt-24' : ''}`}>
-                <MaskReveal from={i % 2 === 0 ? 'left' : 'right'} className="relative aspect-[4/5] overflow-hidden">
-                  {/* Colour panel on hover */}
+              <Link
+                key={p.id}
+                href={`/coleccion/${p.id}`}
+                data-cursor="view"
+                className={`press group block focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink/40 ${i % 2 === 1 ? 'md:mt-24' : ''}`}
+              >
+                <MaskReveal from={i % 2 === 0 ? 'left' : 'right'} delay={i * 0.08} className="relative aspect-[4/5] overflow-hidden">
+                  {/* Colour panel on hover/focus */}
                   <div
-                    className="absolute inset-0 scale-[0.97] opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+                    className="absolute inset-0 scale-[0.97] opacity-0 group-hover:scale-100 group-hover:opacity-100 group-focus-within:scale-100 group-focus-within:opacity-100 transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
                     style={{ backgroundColor: p.theme.bg }}
                   />
                   <span className="absolute inset-0 flex items-center justify-center font-bebas text-[34vw] md:text-[18vw] select-none pointer-events-none leading-none text-ink/[0.05]">
@@ -56,7 +61,7 @@ export function CollectionGrid() {
                       alt={`ACRO ${p.number}`}
                       width={620}
                       height={760}
-                      className={`relative z-10 h-[72%] w-auto object-contain transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06] drop-shadow-xl ${
+                      className={`relative z-10 h-[72%] w-auto object-contain transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06] group-focus-within:scale-[1.06] drop-shadow-xl ${
                         outOfStock ? 'grayscale opacity-50' : ''
                       }`}
                     />
@@ -73,7 +78,7 @@ export function CollectionGrid() {
                   {/* Info on hover */}
                   {!outOfStock && (
                     <div
-                      className="absolute z-20 inset-x-0 bottom-0 p-6 md:p-7 flex items-end justify-between opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500"
+                      className="absolute z-20 inset-x-0 bottom-0 p-6 md:p-7 flex items-end justify-between opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:translate-y-0 transition-all duration-500"
                       style={{ color: p.theme.text }}
                     >
                       <div>

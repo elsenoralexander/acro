@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { Footer } from '@/components/Footer'
@@ -65,10 +66,21 @@ export default function ProductPage() {
       <button
         onClick={handleAdd}
         disabled={inCart || catalogStock === null}
-        className={`${big ? 'text-2xl py-5 px-14' : 'text-xl py-4 px-8 w-full max-w-xs'} font-bebas tracking-[0.2em] border-2 transition-all duration-300 hover:opacity-80 disabled:opacity-40`}
+        className={`press relative overflow-hidden ${big ? 'text-2xl py-5 px-14' : 'text-xl py-4 px-8 w-full max-w-xs'} font-bebas tracking-[0.2em] border-2 transition-colors duration-300 hover:opacity-80 disabled:opacity-40`}
         style={{ borderColor: txtColor, color: inCart ? bgColor : txtColor, backgroundColor: inCart ? txtColor : 'transparent' }}
       >
-        {inCart ? '✓ En el carrito' : added ? '✓ Añadido' : 'Añadir al carrito'}
+        <AnimatePresence mode="popLayout" initial={false}>
+          <motion.span
+            key={inCart ? 'incart' : added ? 'added' : 'add'}
+            initial={{ y: '120%', opacity: 0 }}
+            animate={{ y: '0%', opacity: 1 }}
+            exit={{ y: '-120%', opacity: 0 }}
+            transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+            className="block"
+          >
+            {inCart ? '✓ En el carrito' : added ? '✓ Añadido' : 'Añadir al carrito'}
+          </motion.span>
+        </AnimatePresence>
       </button>
     )
 
@@ -76,6 +88,7 @@ export default function ProductPage() {
     <>
       {/* ── HERO — recorte flotando, sin vídeo ───────────────── */}
       <section
+        data-tone={isDark ? 'dark' : 'light'}
         className="relative min-h-screen flex flex-col md:flex-row items-center overflow-hidden"
         style={{ backgroundColor: bgColor, color: txtColor }}
       >
@@ -86,7 +99,7 @@ export default function ProductPage() {
         <div className="relative z-10 w-full md:w-1/2 flex items-center justify-center pt-28 md:pt-0 px-10 md:px-16 min-h-[55vh] md:min-h-screen">
           <Image
             src={heroImage}
-            alt={`ACRO ${number}`}
+            alt={`Bolso ACRO ${number} — ${copy.es.tagline.split('.')[0]}`}
             width={620}
             height={760}
             className="animate-float h-[44vh] md:h-[68vh] w-auto object-contain drop-shadow-2xl"
@@ -100,7 +113,7 @@ export default function ProductPage() {
           </div>
           <h1 className="font-bebas text-[18vw] md:text-[12vw] leading-none" style={{ color: txtColor }}>{number}</h1>
           <p className="font-sans text-sm leading-relaxed mt-4 max-w-sm" style={{ color: txtColor, opacity: 0.7 }}>{copy.es.tagline}</p>
-          <p className="font-sans text-xs leading-relaxed mt-2 max-w-sm italic" style={{ color: txtColor, opacity: 0.35 }}>{copy.en.tagline}</p>
+          <p className="font-sans text-xs leading-relaxed mt-2 max-w-sm italic" style={{ color: txtColor, opacity: 0.55 }}>{copy.en.tagline}</p>
           <div className="mt-8 flex items-baseline gap-3">
             <span className="font-bebas text-5xl" style={{ color: txtColor }}>{price}€</span>
             <span className="font-sans text-xs" style={{ color: txtColor, opacity: 0.35 }}>IVA incluido · Envío España</span>
@@ -134,7 +147,7 @@ export default function ProductPage() {
       )}
 
       {/* ── EL MUNDO — cita sobre la foto a sangre (parallax) ── */}
-      <section className="relative w-full h-[100svh] overflow-hidden bg-ink">
+      <section data-tone="dark" className="relative w-full h-[100svh] overflow-hidden bg-ink">
         <Parallax speed={0.22} className="absolute inset-0 -top-[12%] h-[124%]">
           <Image src={shooting[0]} alt={`ACRO ${number}`} fill className="object-cover" sizes="100vw" priority />
         </Parallax>
@@ -185,12 +198,12 @@ export default function ProductPage() {
       )}
 
       {/* ── DETALLES — fondo lleno, sin huecos ── */}
-      <section className="py-24 md:py-32 px-6 md:px-10" style={{ backgroundColor: detailBg }}>
+      <section data-tone={isDark ? 'dark' : 'light'} className="py-24 md:py-32 px-6 md:px-10" style={{ backgroundColor: detailBg }}>
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-start">
           <Reveal as="div">
             <p className="text-[9px] tracking-[0.5em] uppercase font-sans mb-8" style={{ color: txtColor, opacity: 0.4 }}>Descripción / Description</p>
             <p className="font-sans text-base md:text-lg leading-relaxed" style={{ color: txtColor, opacity: 0.85 }}>{copy.es.description}</p>
-            <p className="font-sans text-sm leading-relaxed mt-4 italic" style={{ color: txtColor, opacity: 0.35 }}>{copy.en.description}</p>
+            <p className="font-sans text-sm leading-relaxed mt-4 italic" style={{ color: txtColor, opacity: 0.6 }}>{copy.en.description}</p>
           </Reveal>
           <Reveal as="div" delay={0.12}>
             <p className="text-[9px] tracking-[0.5em] uppercase font-sans mb-8" style={{ color: txtColor, opacity: 0.4 }}>Materiales / Materials</p>
@@ -207,7 +220,7 @@ export default function ProductPage() {
       </section>
 
       {/* ── CTA ────────────────────────── */}
-      <section className="py-28 md:py-36 px-6 flex flex-col items-center text-center" style={{ backgroundColor: bgColor, color: txtColor }}>
+      <section data-tone={isDark ? 'dark' : 'light'} className="py-28 md:py-36 px-6 flex flex-col items-center text-center" style={{ backgroundColor: bgColor, color: txtColor }}>
         <Reveal>
           <div className="unique-stamp inline-block mb-10" style={{ color: txtColor, borderColor: txtColor, opacity: 0.4 }}>Pieza Única · {sku}</div>
         </Reveal>

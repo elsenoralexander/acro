@@ -3,6 +3,7 @@ import { Bebas_Neue, Inter } from 'next/font/google'
 import { CartProvider } from '@/components/CartProvider'
 import { Header } from '@/components/Header'
 import { SmoothScroll } from '@/components/SmoothScroll'
+import { Cursor } from '@/components/Cursor'
 import './globals.css'
 
 const bebasNeue = Bebas_Neue({
@@ -38,6 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Header />
             <main>{children}</main>
           </SmoothScroll>
+          <Cursor />
         </CartProvider>
       </body>
     </html>

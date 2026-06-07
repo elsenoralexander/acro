@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 export function Footer() {
   return (
-    <footer className="bg-ink text-chalk border-t border-white/10">
+    <footer data-tone="dark" className="bg-ink text-chalk border-t border-white/10">
       <div className="max-w-6xl mx-auto px-6 md:px-10 py-16 grid grid-cols-1 md:grid-cols-3 gap-12">
         <div className="flex flex-col gap-4">
           <Image
@@ -31,7 +31,7 @@ export function Footer() {
             <Link
               key={l.href}
               href={l.href}
-              className="text-xs text-white/60 hover:text-white transition-colors tracking-wider uppercase font-sans"
+              className="text-xs text-white/60 hover:text-white transition-colors tracking-wider uppercase font-sans py-1.5"
             >
               {l.label}
             </Link>
@@ -42,7 +42,7 @@ export function Footer() {
           <span className="text-[10px] tracking-[0.4em] uppercase text-white/30 mb-1">Contacto</span>
           <a
             href="mailto:hola@acro.es"
-            className="text-xs text-white/60 hover:text-white transition-colors font-sans"
+            className="text-xs text-white/60 hover:text-white transition-colors font-sans py-1.5"
           >
             hola@acro.es
           </a>
@@ -50,7 +50,8 @@ export function Footer() {
             href="https://instagram.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-white/60 hover:text-white transition-colors font-sans"
+            aria-label="ACRO en Instagram, @acro_donostia"
+            className="text-xs text-white/60 hover:text-white transition-colors font-sans py-1.5"
           >
             @acro_donostia
           </a>
@@ -58,10 +59,10 @@ export function Footer() {
       </div>
 
       <div className="border-t border-white/10 px-6 md:px-10 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
-        <p className="text-[10px] text-white/20 tracking-widest font-sans">
-          © {new Date().getFullYear()} ACRO — DONOSTIA
+        <p className="text-[10px] text-white/45 tracking-widest font-sans">
+          © {new Date().getFullYear()} ACRO · DONOSTIA
         </p>
-        <p className="text-[10px] text-white/20 tracking-widest font-sans uppercase">
+        <p className="text-[10px] text-white/45 tracking-widest font-sans uppercase">
           Cada pieza, única
         </p>
       </div>
