@@ -258,6 +258,68 @@ export const products: Product[] = [
       accent: '#C2A24E',
     },
   },
+  {
+    id: '05',
+    number: '05',
+    price: 145,
+    images: {
+      main: '/images/product-05.jpg',
+      views: [
+        '/images/product-05.jpg',
+        '/images/product-05-detail-1.jpg',
+        '/images/product-05-detail-2.jpg',
+      ],
+    },
+    cutout: '/spin/cutout-05.png',
+    shooting: [
+      '/images/shoot-05-1.jpg',
+      '/images/shoot-05-2.jpg',
+      '/images/shoot-05-3.jpg',
+      '/images/shoot-05-4.jpg',
+      '/images/shoot-05-5.jpg',
+      '/images/shoot-05-6.jpg',
+      '/images/shoot-05-7.jpg',
+    ],
+    copy: {
+      es: {
+        tagline: 'Margaritas tejidas. Lino crudo. Campo abierto.',
+        description:
+          'Tejida a mano, flor a flor, en hilo de algodón color crudo. Margaritas de crochet en relieve sobre un cuerpo forrado de lino. Formato tote — amplio, ligero, de luz. El 05 no es para la ciudad. Es para el campo, la hora dorada, el camino largo entre flores.',
+        details: [
+          'Hilo de algodón natural color crudo',
+          'Flores de crochet en relieve, hechas a mano',
+          'Asas trenzadas a mano',
+          'Interior forrado en lino',
+          'Cierre de cremallera dorada',
+          'Placa ACRO',
+          'Hecho en Donostia',
+        ],
+        world:
+          'El 05 nació en un campo de flores silvestres al atardecer. De la luz que se cuela entre los tallos, del encaje de la reina Ana, de ese verano lento que no tiene prisa. Cada margarita está tejida a mano — como las que crecen, una a una, sin molde.',
+      },
+      en: {
+        tagline: 'Woven daisies. Raw linen. Open field.',
+        description:
+          'Hand-woven, flower by flower, in natural ecru cotton yarn. Raised crochet daisies over a linen-lined body. Tote format — roomy, light, full of air. The 05 is not for the city. It is for the field, the golden hour, the long walk through flowers.',
+        details: [
+          'Natural ecru cotton yarn',
+          'Raised crochet flowers, handmade',
+          'Hand-braided straps',
+          'Linen-lined interior',
+          'Gold zip closure',
+          'ACRO plate',
+          'Made in Donostia',
+        ],
+        world:
+          "The 05 was born in a field of wildflowers at dusk. From the light slipping between the stems, from Queen Anne's lace, from that slow summer in no hurry. Each daisy is woven by hand — like the ones that grow, one by one, with no mould.",
+      },
+    },
+    theme: {
+      bg: '#EFEADD',
+      text: '#2A2417',
+      accent: '#8F9779',
+    },
+  },
 ]
 
 export function getProduct(id: string): Product | undefined {
