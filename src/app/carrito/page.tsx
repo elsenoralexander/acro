@@ -28,14 +28,14 @@ export default function CarritoPage() {
 
           {items.length === 0 ? (
             <div className="text-center py-20">
-              <p className="font-sans text-sm text-ink/40 mb-8">
+              <p className="font-sans text-sm text-ink/60 mb-8">
                 Tu carrito está vacío.
                 <br />
-                <em className="opacity-60">Your cart is empty.</em>
+                <em className="text-ink/45">Your cart is empty.</em>
               </p>
               <Link
                 href="/coleccion"
-                className="font-bebas text-xl tracking-[0.2em] border-2 border-ink px-8 py-3 hover:bg-ink hover:text-chalk transition-colors duration-300"
+                className="press inline-block font-bebas text-xl tracking-[0.2em] border-2 border-ink px-8 py-3 hover:bg-ink hover:text-chalk transition-colors duration-300"
               >
                 Ver Colección
               </Link>
@@ -66,7 +66,7 @@ export default function CarritoPage() {
                       <div className="flex items-start justify-between">
                         <div>
                           <span className="font-bebas text-3xl text-ink">{product.number}</span>
-                          <p className="font-sans text-xs text-ink/50 mt-0.5">
+                          <p className="font-sans text-xs text-ink/65 mt-0.5">
                             {product.copy.es.tagline.split('.')[0]}
                           </p>
                           <p className="font-sans text-[9px] text-ink/30 tracking-[0.3em] uppercase mt-1">
@@ -80,7 +80,8 @@ export default function CarritoPage() {
                     {/* Remove */}
                     <button
                       onClick={() => removeItem(product.id)}
-                      className="text-ink/30 hover:text-ink transition-colors font-sans text-xs tracking-wider uppercase"
+                      aria-label={`Quitar pieza ${product.number} del carrito`}
+                      className="press text-ink/55 hover:text-ink transition-colors font-sans text-xs tracking-wider uppercase -m-2 p-2"
                     >
                       Quitar
                     </button>
@@ -96,23 +97,23 @@ export default function CarritoPage() {
               </div>
 
               {/* Note */}
-              <p className="font-sans text-xs text-ink/40 mb-8 leading-relaxed">
+              <p className="font-sans text-xs text-ink/60 mb-8 leading-relaxed">
                 Las piezas ACRO son únicas. Una vez vendida, no habrá otra igual.
                 <br />
-                <em>ACRO pieces are unique. Once sold, there will never be another.</em>
+                <em className="text-ink/45">ACRO pieces are unique. Once sold, there will never be another.</em>
               </p>
 
               {/* Checkout CTA */}
               <button
                 onClick={() => router.push('/checkout')}
-                className="w-full font-bebas text-2xl tracking-[0.2em] py-5 bg-ink text-chalk hover:opacity-80 transition-opacity duration-300"
+                className="press w-full font-bebas text-2xl tracking-[0.2em] py-5 bg-ink text-chalk hover:opacity-80 transition-opacity duration-300"
               >
                 Finalizar Compra / Checkout
               </button>
 
               <Link
                 href="/coleccion"
-                className="block text-center mt-4 font-sans text-xs text-ink/40 hover:text-ink transition-colors tracking-wider uppercase"
+                className="block text-center mt-4 font-sans text-xs text-ink/55 hover:text-ink transition-colors tracking-wider uppercase py-2"
               >
                 ← Seguir viendo
               </Link>

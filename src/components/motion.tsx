@@ -1,9 +1,55 @@
 'use client'
 
-import { useRef, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { motion, useScroll, useTransform, useSpring, type MotionStyle } from 'framer-motion'
 
 const EASE = [0.16, 1, 0.3, 1] as const
+
+/* ── useReveal — scroll-position trigger ─────────────────────────
+   Framer's `whileInView` AND a native IntersectionObserver both proved
+   unreliable under Lenis smooth scroll (neither fired on scroll-in, so
+   clip-path content stayed clipped to zero = invisible). Lenis drives the
+   native window scroll position, so a passive `scroll` listener checking
+   the element's rect is the reliable signal. rAF-throttled, self-removing
+   once shown, with a mount check so above-fold content shows instantly. */
+function useReveal(visibleAt = 0.9) {
+  const ref = useRef<HTMLElement | null>(null)
+  const [shown, setShown] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    let raf = 0
+
+    const cleanup = () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      cancelAnimationFrame(raf)
+    }
+    const check = () => {
+      const el2 = ref.current
+      if (!el2) return
+      const r = el2.getBoundingClientRect()
+      // Trigger once the element's top rises into the bottom `visibleAt` of
+      // the viewport (and it's not already scrolled past above).
+      if (r.top < window.innerHeight * visibleAt && r.bottom > 0) {
+        setShown(true)
+        cleanup()
+      }
+    }
+    const onScroll = () => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(check)
+    }
+
+    check() // in-view at mount → reveal immediately
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll, { passive: true })
+    return cleanup
+  }, [visibleAt])
+
+  return [ref, shown] as const
+}
 
 /* ── Reveal — fade + rise when it enters the viewport ───────────── */
 export function Reveal({
@@ -12,7 +58,6 @@ export function Reveal({
   y = 48,
   delay = 0,
   duration = 0.9,
-  once = true,
   as = 'div',
 }: {
   children: ReactNode
@@ -24,12 +69,13 @@ export function Reveal({
   as?: 'div' | 'span' | 'li' | 'section'
 }) {
   const Comp = motion[as] as typeof motion.div
+  const [ref, shown] = useReveal(0.88)
   return (
     <Comp
+      ref={ref as React.Ref<HTMLDivElement>}
       className={className}
       initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once, margin: '-12% 0px -12% 0px' }}
+      animate={shown ? { opacity: 1, y: 0 } : { opacity: 0, y }}
       transition={{ duration, delay, ease: EASE }}
     >
       {children}
@@ -57,12 +103,14 @@ export function MaskReveal({
     left: 'inset(0% 100% 0% 0%)',
     right: 'inset(0% 0% 0% 100%)',
   }[from]
+  const open = 'inset(0% 0% 0% 0%)'
+  const [ref, shown] = useReveal(0.92)
   return (
     <motion.div
+      ref={ref as React.Ref<HTMLDivElement>}
       className={className}
-      initial={{ clipPath: closed, scale: 1.08 }}
-      whileInView={{ clipPath: 'inset(0% 0% 0% 0%)', scale: 1 }}
-      viewport={{ once: true, margin: '-8% 0px -8% 0px' }}
+      initial={{ clipPath: closed, scale: 1.06 }}
+      animate={shown ? { clipPath: open, scale: 1 } : { clipPath: closed, scale: 1.06 }}
       transition={{ duration, delay, ease: EASE }}
     >
       {children}
@@ -110,12 +158,13 @@ export function Words({
   y?: number
 }) {
   const words = text.split(' ')
+  const [ref, shown] = useReveal(0.9)
   return (
     <motion.span
+      ref={ref as React.Ref<HTMLSpanElement>}
       className={className}
       initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: '-10% 0px -10% 0px' }}
+      animate={shown ? 'show' : 'hidden'}
       transition={{ staggerChildren: stagger, delayChildren: delay }}
       style={{ display: 'inline-block' }}
     >
@@ -130,7 +179,7 @@ export function Words({
             }}
           >
             {w}
-            {i < words.length - 1 ? ' ' : ''}
+            {i < words.length - 1 ? ' ' : ''}
           </motion.span>
         </span>
       ))}

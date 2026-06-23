@@ -34,7 +34,7 @@ export default function Home() {
   return (
     <>
       {/* ── HERO ─────────────────────────────────────── */}
-      <section ref={heroRef} className="relative h-screen bg-white flex flex-col items-center justify-center overflow-hidden">
+      <section ref={heroRef} data-tone="light" className="relative h-screen bg-white flex flex-col items-center justify-center overflow-hidden">
         <motion.div
           className="absolute inset-0 opacity-[0.04]"
           style={{
@@ -78,7 +78,7 @@ export default function Home() {
       </section>
 
       {/* ── MANIFESTO — líneas que se desplazan con el scroll ── */}
-      <section ref={manifestoRef} className="bg-ink text-chalk py-28 md:py-48 overflow-hidden">
+      <section ref={manifestoRef} data-tone="dark" className="bg-ink text-chalk py-28 md:py-48 overflow-hidden">
         <div className="px-6 md:px-10">
           <motion.h2 style={{ x: line1X }} className="font-bebas text-[16vw] md:text-[11vw] leading-[0.85] whitespace-nowrap">
             <Words text="CADA PIEZA" />
@@ -91,13 +91,13 @@ export default function Home() {
           <motion.div className="h-px bg-chalk/20 origin-left mb-10" style={{ scaleX: manDivider }} />
           <div className="flex flex-col md:flex-row gap-8 md:gap-16 max-w-3xl">
             <Reveal as="div" className="flex-1" delay={0.1}>
-              <p className="font-sans text-sm text-chalk/50 leading-relaxed">
-                No hay fábrica. No hay serie. Existe una, y cuando se va, no vuelve. Cada pieza sale de las mismas manos — una a una, en Donostia.
+              <p className="font-sans text-sm text-chalk/70 leading-relaxed">
+                No hay fábrica. No hay serie. Existe una, y cuando se va, no vuelve. Cada pieza sale de las mismas manos, una a una, en Donostia.
               </p>
             </Reveal>
             <Reveal as="div" className="flex-1" delay={0.25}>
-              <p className="font-sans text-sm text-chalk/25 leading-relaxed italic">
-                No factory. No series. There is one, and when it goes, it does not return. Each piece comes from the same hands — one by one, in Donostia.
+              <p className="font-sans text-sm text-chalk/55 leading-relaxed italic">
+                No factory. No series. There is one, and when it goes, it does not return. Each piece comes from the same hands, one by one, in Donostia.
               </p>
             </Reveal>
           </div>
@@ -105,7 +105,7 @@ export default function Home() {
       </section>
 
       {/* ── MARQUEE ──────────────────────────────────── */}
-      <div className="bg-ink border-y border-chalk/8 py-4 overflow-hidden">
+      <div data-tone="dark" className="bg-ink border-y border-chalk/8 py-4 overflow-hidden" aria-hidden="true">
         <div className="marquee-track whitespace-nowrap">
           {[...Array(6)].map((_, i) => (
             <span key={i} className="inline-flex items-center gap-8 px-8 font-bebas text-2xl text-chalk/15 tracking-widest">
@@ -116,6 +116,7 @@ export default function Home() {
       </div>
 
       {/* ── CONVERGENCIA — las piezas entran desde los lados y se juntan ── */}
+      <div data-tone="dark">
       <ConvergeScene
         bg="#0A0A0A"
         textColor="#F5F5F0"
@@ -131,8 +132,10 @@ export default function Home() {
           '/images/shoot-04-7.jpg',
         ]}
       />
+      </div>
 
       {/* ── ESCENA DEL BOLSO — PNG nítido + motion graphics ── */}
+      <div data-tone="light">
       <ProductScene
         image="/spin/pop-cutout.png"
         alt="ACRO POP"
@@ -144,20 +147,26 @@ export default function Home() {
         accent="#C2A24E"
         textColor="#241B12"
       />
+      </div>
 
       {/* ── COLECCIÓN — recortes transparentes + hover estilo biccamera ── */}
-      <section className="bg-white py-24 md:py-40 px-6 md:px-10 overflow-hidden">
+      <section data-tone="light" className="bg-white py-24 md:py-40 px-6 md:px-10 overflow-hidden">
         <div className="max-w-6xl mx-auto">
           <h2 className="font-bebas text-[14vw] md:text-[8vw] leading-[0.85] text-ink mb-16 md:mb-24">
             <Words text="LA COLECCIÓN" />
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-16 md:gap-y-28">
             {products.map((p, i) => (
-              <Link key={p.id} href={`/coleccion/${p.id}`} className={`group block ${i % 2 === 1 ? 'md:mt-24' : ''}`}>
-                <MaskReveal from={i % 2 === 0 ? 'left' : 'right'} className="relative aspect-[4/5] overflow-hidden">
+              <Link
+                key={p.id}
+                href={`/coleccion/${p.id}`}
+                data-cursor="view"
+                className={`press group block focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink/40 ${i % 2 === 1 ? 'md:mt-24' : ''}`}
+              >
+                <MaskReveal from={i % 2 === 0 ? 'left' : 'right'} delay={i * 0.08} className="relative aspect-[4/5] overflow-hidden">
                   {/* Panel de color que aparece al pasar por encima */}
                   <div
-                    className="absolute inset-0 scale-[0.97] opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+                    className="absolute inset-0 scale-[0.97] opacity-0 group-hover:scale-100 group-hover:opacity-100 group-focus-within:scale-100 group-focus-within:opacity-100 transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
                     style={{ backgroundColor: p.theme.bg }}
                   />
                   {/* Número de marca de agua */}
@@ -171,12 +180,12 @@ export default function Home() {
                       alt={`ACRO ${p.number}`}
                       width={620}
                       height={760}
-                      className="relative z-10 h-[72%] w-auto object-contain transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06] drop-shadow-xl"
+                      className="relative z-10 h-[72%] w-auto object-contain transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06] group-focus-within:scale-[1.06] drop-shadow-xl"
                     />
                   </div>
                   {/* Info que sale al pasar por encima */}
                   <div
-                    className="absolute z-20 inset-x-0 bottom-0 p-6 md:p-7 flex items-end justify-between opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500"
+                    className="absolute z-20 inset-x-0 bottom-0 p-6 md:p-7 flex items-end justify-between opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:translate-y-0 transition-all duration-500"
                     style={{ color: p.theme.text }}
                   >
                     <div>
@@ -203,7 +212,7 @@ export default function Home() {
       </section>
 
       {/* ── CTA — escala y se desplaza con el scroll ── */}
-      <section ref={ctaRef} className="bg-ink text-chalk py-32 md:py-52 px-6 flex flex-col items-center text-center overflow-hidden">
+      <section ref={ctaRef} data-tone="dark" className="bg-ink text-chalk py-32 md:py-52 px-6 flex flex-col items-center text-center overflow-hidden">
         <Reveal>
           <div className="unique-stamp border-chalk/20 text-chalk/30 mb-14">Una pieza · Una vez · Once</div>
         </Reveal>
@@ -213,7 +222,7 @@ export default function Home() {
         <Reveal delay={0.15}>
           <Link
             href="/coleccion"
-            className="group relative inline-flex items-center gap-4 font-bebas text-xl tracking-[0.3em] px-12 py-4 border border-chalk/20 text-chalk/70 hover:text-ink overflow-hidden transition-colors duration-500"
+            className="press group relative inline-flex items-center gap-4 font-bebas text-xl tracking-[0.3em] px-12 py-4 border border-chalk/20 text-chalk/70 hover:text-ink overflow-hidden transition-colors duration-500"
           >
             <span className="absolute inset-0 bg-chalk -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" />
             <span className="relative">Ver Colección</span>
