@@ -126,6 +126,7 @@ export function ScrubBagScene({
     }
     const iw = img.naturalWidth
     const ih = img.naturalHeight
+    // "cover": fill the stage full-bleed (crops overflow) — the big hero look.
     const scale = Math.max((cw * dpr) / iw, (ch * dpr) / ih)
     const dw = iw * scale
     const dh = ih * scale
