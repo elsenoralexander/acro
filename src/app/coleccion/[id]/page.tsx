@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { Footer } from '@/components/Footer'
 import { ProductScene } from '@/components/ProductScene'
+import { ScrubBagScene } from '@/components/ScrubBagScene'
 import { ConvergeScene } from '@/components/scenes'
 import { Reveal, Parallax, Words, MaskReveal } from '@/components/motion'
 import { getProduct } from '@/lib/products'
@@ -43,6 +44,18 @@ export default function ProductPage() {
   const isDark = isDarkColor(theme.bg)
   const sku = `#${/^\d+$/.test(number) ? 'P' + number : number}-001`
   const heroImage = product.cutout ?? (isDark && images.dark ? images.dark : images.main)
+  // El 05 (tote de margaritas) tiene un clip de transición scrubbeado como hero.
+  // Reutilizamos ese bolso como lienzo: los beats del tagline aparecen ENCIMA del
+  // clip mientras se transforma, en vez de repetir el bolso en una ProductScene.
+  const isShowcase = number === '05'
+  const SCRUB_FRAMES = 90
+  const showcaseBeats = isShowcase
+    ? copy.es.tagline.split('.').map((s) => s.trim().toUpperCase()).filter(Boolean)
+    : []
+  const showcaseMeta = `${price}€ · Hecho en Donostia`
+  // Marrón cálido para los beats — oscuro pero más claro que el casi-negro del
+  // tema, para que no pese tanto sobre el crema.
+  const beatColor = '#5A4632'
 
   const handleAdd = () => {
     addItem(product)
@@ -86,51 +99,101 @@ export default function ProductPage() {
 
   return (
     <>
-      {/* ── HERO — recorte flotando, sin vídeo ───────────────── */}
-      <section
-        data-tone={isDark ? 'dark' : 'light'}
-        className="relative min-h-screen flex flex-col md:flex-row items-center overflow-hidden"
-        style={{ backgroundColor: bgColor, color: txtColor }}
-      >
-        <span className="absolute right-0 bottom-0 font-bebas text-[40vw] leading-none select-none pointer-events-none" style={{ color: txtColor, opacity: 0.04 }}>
-          {number}
-        </span>
-
-        <div className="relative z-10 w-full md:w-1/2 flex items-center justify-center pt-28 md:pt-0 px-10 md:px-16 min-h-[55vh] md:min-h-screen">
-          <Image
-            src={heroImage}
-            alt={`Bolso ACRO ${number} — ${copy.es.tagline.split('.')[0]}`}
-            width={620}
-            height={760}
-            className="animate-float h-[44vh] md:h-[68vh] w-auto object-contain drop-shadow-2xl"
-            priority
-          />
-        </div>
-
-        <div className="relative z-10 w-full md:w-1/2 px-8 md:px-16 py-12 md:py-0 flex flex-col justify-center">
-          <div className="unique-stamp inline-block self-start mb-8" style={{ color: txtColor, borderColor: txtColor, opacity: 0.5 }}>
-            Pieza Única · One of a Kind
+      {/* ── HERO ──────────────────────────────────────────────
+         El 05 usa un clip scrubbeado (bolso → margaritas → bolso) a sangre
+         completa; el resto, el recorte flotando. */}
+      {isShowcase ? (
+        <ScrubBagScene
+          framePath={(i) => `/scrub/05/frame_${String(i).padStart(4, '0')}.webp`}
+          frameCount={SCRUB_FRAMES}
+          bg={bgColor}
+          height={`${(1 + showcaseBeats.length) * 100}vh`}
+          beats={showcaseBeats}
+          meta={showcaseMeta}
+          textColor={beatColor}
+        >
+          {/* Panel de info/compra — ocupa el primer viewport y SCROLLEA sobre el
+             clip fijo; el velo viaja con el texto para mantener la legibilidad. */}
+          <div
+            data-tone="light"
+            className="relative min-h-[100svh] flex flex-col justify-end md:justify-center md:items-end px-7 md:px-16 pb-16 md:pb-0"
+          >
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#EFEADD]/95 via-[#EFEADD]/10 to-transparent md:bg-gradient-to-l md:from-[#EFEADD]/85 md:via-[#EFEADD]/5 md:to-transparent" />
+            <div className="relative flex flex-col w-full max-w-sm md:items-end md:text-right">
+              <div className="unique-stamp inline-block self-start md:self-end mb-6" style={{ color: txtColor, borderColor: txtColor, opacity: 0.5 }}>
+                Pieza Única · One of a Kind
+              </div>
+              <h1 className="font-bebas text-7xl md:text-8xl leading-none" style={{ color: txtColor }}>{number}</h1>
+              <p className="font-sans text-sm leading-relaxed mt-3 max-w-sm" style={{ color: txtColor, opacity: 0.75 }}>{copy.es.tagline}</p>
+              <p className="font-sans text-xs leading-relaxed mt-1 max-w-sm italic" style={{ color: txtColor, opacity: 0.55 }}>{copy.en.tagline}</p>
+              <div className="mt-6 flex items-baseline gap-3 md:flex-row-reverse">
+                <span className="font-bebas text-5xl" style={{ color: txtColor }}>{price}€</span>
+                <span className="font-sans text-xs" style={{ color: txtColor, opacity: 0.35 }}>IVA incluido · Envío España</span>
+              </div>
+              <div className="mt-6 w-full max-w-xs md:self-end">
+                <AddButton />
+              </div>
+              {inCart && (
+                <button onClick={() => router.push('/carrito')} className="mt-3 w-full max-w-xs font-sans text-xs tracking-[0.3em] uppercase py-2 opacity-50 hover:opacity-100 transition-opacity" style={{ color: txtColor }}>
+                  Ver carrito →
+                </button>
+              )}
+            </div>
+            {/* Indicador de scroll */}
+            <div className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 hidden md:flex">
+              <span className="font-sans text-[9px] tracking-[0.5em] uppercase" style={{ color: txtColor, opacity: 0.3 }}>Scroll</span>
+              <span className="block w-px h-10" style={{ backgroundColor: txtColor, opacity: 0.2 }} />
+            </div>
           </div>
-          <h1 className="font-bebas text-[18vw] md:text-[12vw] leading-none" style={{ color: txtColor }}>{number}</h1>
-          <p className="font-sans text-sm leading-relaxed mt-4 max-w-sm" style={{ color: txtColor, opacity: 0.7 }}>{copy.es.tagline}</p>
-          <p className="font-sans text-xs leading-relaxed mt-2 max-w-sm italic" style={{ color: txtColor, opacity: 0.55 }}>{copy.en.tagline}</p>
-          <div className="mt-8 flex items-baseline gap-3">
-            <span className="font-bebas text-5xl" style={{ color: txtColor }}>{price}€</span>
-            <span className="font-sans text-xs" style={{ color: txtColor, opacity: 0.35 }}>IVA incluido · Envío España</span>
-          </div>
-          <div className="mt-6">
-            <AddButton />
-          </div>
-          {inCart && (
-            <button onClick={() => router.push('/carrito')} className="mt-3 w-full max-w-xs font-sans text-xs tracking-[0.3em] uppercase py-2 opacity-50 hover:opacity-100 transition-opacity" style={{ color: txtColor }}>
-              Ver carrito →
-            </button>
-          )}
-        </div>
-      </section>
+        </ScrubBagScene>
+      ) : (
+        <section
+          data-tone={isDark ? 'dark' : 'light'}
+          className="relative min-h-screen flex flex-col md:flex-row items-center overflow-hidden"
+          style={{ backgroundColor: bgColor, color: txtColor }}
+        >
+          <span className="absolute right-0 bottom-0 font-bebas text-[40vw] leading-none select-none pointer-events-none" style={{ color: txtColor, opacity: 0.04 }}>
+            {number}
+          </span>
 
-      {/* ── ESCENA DEL BOLSO — recorte + motion graphics ── */}
-      {product.cutout && (
+          <div className="relative z-10 w-full md:w-1/2 flex items-center justify-center pt-28 md:pt-0 px-10 md:px-16 min-h-[55vh] md:min-h-screen">
+            <Image
+              src={heroImage}
+              alt={`Bolso ACRO ${number} — ${copy.es.tagline.split('.')[0]}`}
+              width={620}
+              height={760}
+              className="animate-float h-[44vh] md:h-[68vh] w-auto object-contain drop-shadow-2xl"
+              priority
+            />
+          </div>
+
+          <div className="relative z-10 w-full md:w-1/2 px-8 md:px-16 py-12 md:py-0 flex flex-col justify-center">
+            <div className="unique-stamp inline-block self-start mb-8" style={{ color: txtColor, borderColor: txtColor, opacity: 0.5 }}>
+              Pieza Única · One of a Kind
+            </div>
+            <h1 className="font-bebas text-[18vw] md:text-[12vw] leading-none" style={{ color: txtColor }}>{number}</h1>
+            <p className="font-sans text-sm leading-relaxed mt-4 max-w-sm" style={{ color: txtColor, opacity: 0.7 }}>{copy.es.tagline}</p>
+            <p className="font-sans text-xs leading-relaxed mt-2 max-w-sm italic" style={{ color: txtColor, opacity: 0.55 }}>{copy.en.tagline}</p>
+            <div className="mt-8 flex items-baseline gap-3">
+              <span className="font-bebas text-5xl" style={{ color: txtColor }}>{price}€</span>
+              <span className="font-sans text-xs" style={{ color: txtColor, opacity: 0.35 }}>IVA incluido · Envío España</span>
+            </div>
+            <div className="mt-6">
+              <AddButton />
+            </div>
+            {inCart && (
+              <button onClick={() => router.push('/carrito')} className="mt-3 w-full max-w-xs font-sans text-xs tracking-[0.3em] uppercase py-2 opacity-50 hover:opacity-100 transition-opacity" style={{ color: txtColor }}>
+                Ver carrito →
+              </button>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* ── ESCENA DEL BOLSO — recorte + motion graphics ──
+         El 05 ya muestra el bolso (y sus beats) en el scrub de arriba; no lo
+         repetimos aquí. */}
+      {product.cutout && !isShowcase && (
         <ProductScene
           image={product.cutout}
           alt={`ACRO ${number}`}
